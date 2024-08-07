@@ -46,7 +46,7 @@ void Game::update()
 	}
 
 	this->paddle->update();
-	this->ball->update(this->paddle->sprite);
+	this->ball->update();
 	
 }
 
@@ -87,7 +87,7 @@ void Game::initWindow()
 }
 void Game::initTextures()
 {
-	this->paddleTexture.loadFromFile("Assets/Paddle.png");
+	this->paddleTexture.loadFromFile("Assets/Paddle2.png");
 	this->ballTexture.loadFromFile("Assets/Ball.png");
 	this->wallsTexture.loadFromFile("Assets/Walls.png");
 	this->logoTexture.loadFromFile("Assets/ArkanoidLogo.png");
@@ -96,7 +96,7 @@ void Game::initTextures()
 void Game::initSprites()
 {
 	this->paddle = new Paddle(this->paddleTexture, this->window);
-	this->ball = new Ball(this->ballTexture);
+	this->ball = new Ball(this->ballTexture, this->window);
 	this->walls = new Walls(this->wallsTexture);
 	this->logo = new Logo(this->logoTexture, this->window);
 	this->hearts = new std::vector<Heart>(3, this->heartTexture);

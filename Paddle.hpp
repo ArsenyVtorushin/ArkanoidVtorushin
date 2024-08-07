@@ -11,6 +11,8 @@ public:
 	void update();
 	void NotCrossWalls(sf::Sprite& wall);
 
+	float x();
+	float y();
 	float left();
 	float right();
 	float top();
