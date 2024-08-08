@@ -1,12 +1,12 @@
 #ifndef PADDLE_HPP
 #define PADDLE_HPP
-#include "Ball.hpp"
+#include "Walls.hpp"
 
 class Paddle
 {
 public:
 
-	Paddle(sf::Texture& texture, sf::RenderWindow* window);
+	Paddle(sf::Texture* texture, sf::RenderWindow* window);
 	
 	void update();
 	void NotCrossWalls(sf::Sprite& wall);
@@ -18,7 +18,7 @@ public:
 	float top();
 	float bottom();
 
-	sf::Texture texture;
+	sf::Texture* texture;
 	sf::Sprite sprite;
 
 private:

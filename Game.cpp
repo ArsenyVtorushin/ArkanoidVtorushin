@@ -95,11 +95,11 @@ void Game::initTextures()
 }
 void Game::initSprites()
 {
-	this->paddle = new Paddle(this->paddleTexture, this->window);
-	this->ball = new Ball(this->ballTexture, this->window);
-	this->walls = new Walls(this->wallsTexture);
-	this->logo = new Logo(this->logoTexture, this->window);
-	this->hearts = new std::vector<Heart>(3, this->heartTexture);
+	this->paddle = new Paddle(&this->paddleTexture, this->window);
+	this->ball = new Ball(&this->ballTexture, this->window, this->paddle);
+	this->walls = new Walls(&this->wallsTexture);
+	this->logo = new Logo(&this->logoTexture, this->window);
+	this->hearts = new std::vector<Heart>(3, &this->heartTexture);
 	for (int i = 0; i < this->hearts->size(); i++)
 	{
 		(*this->hearts)[i].sprite.setPosition(this->window->getSize().x - 700 + i * (*this->hearts)[i].sprite.getGlobalBounds().width, 500);

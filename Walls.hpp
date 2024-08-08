@@ -6,9 +6,9 @@ class Walls
 {
 public:
 
-	Walls(sf::Texture& texture);
+	Walls(sf::Texture* texture);
 
-	sf::Texture texture;
+	sf::Texture* texture;
 	sf::Sprite sprite;
 };
 

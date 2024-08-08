@@ -6,9 +6,9 @@ class Heart
 {
 public:
 
-	Heart(sf::Texture& texture);
+	Heart(sf::Texture* texture);
 
-	sf::Texture texture;
+	sf::Texture* texture;
 	sf::Sprite sprite;
 
 private:

@@ -1,22 +1,22 @@
 #include "Ball.hpp"
 
-Ball::Ball(sf::Texture& texture, sf::RenderWindow* window, Paddle* paddle)
+Ball::Ball(sf::Texture* texture, sf::RenderWindow* window, Paddle* paddle)
 {
 	this->window = window;
 	this->paddle = paddle;
 	this->texture = texture;
-	this->radius = this->sprite.getGlobalBounds().width / 2;
-	this->sprite.setTexture(texture);
+	this->sprite.setTexture(*texture);
 	this->sprite.setScale(2.1f, 2.1f);
-	this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2, this->sprite.getGlobalBounds().height / 2);
-	this->sprite.setPosition(1000.f, (*this->window).getSize().y - 80);
+	this->sprite.setOrigin(this->sprite.getTexture()->getSize().x * 0.5f, this->sprite.getTexture()->getSize().y * 0.5f);
+	this->sprite.setPosition(1000.f, (*this->window).getSize().y - 80.f);
+	this->radius = this->sprite.getTexture()->getSize().x * 0.5f;
 	this->speed = 8.f;
 	this->velocity = { (-this->speed), (-this->speed) };
 }
 
 void Ball::update()
 {
-	this->sprite.setPosition((*this->paddle).x(), (*this->paddle).top() - this->radius);
+	this->sprite.setPosition((*this->paddle).x(), (*this->paddle).y()/* - this->radius*/);
 }
 
 //Getters / Setters

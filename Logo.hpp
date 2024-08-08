@@ -6,9 +6,9 @@ class Logo
 {
 public:
 
-	Logo(sf::Texture& texture, sf::RenderWindow* window);
+	Logo(sf::Texture* texture, sf::RenderWindow* window);
 
-	sf::Texture texture;
+	sf::Texture* texture;
 	sf::Sprite sprite;
 };
 

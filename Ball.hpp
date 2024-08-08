@@ -1,12 +1,12 @@
 #ifndef BALL_HPP
 #define BALL_HPP
-#include "Walls.hpp"
+#include "Paddle.hpp"
 
 class Ball
 {
 public:
 
-	Ball(sf::Texture& texture, sf::RenderWindow* window, Paddle* paddle);
+	Ball(sf::Texture* texture, sf::RenderWindow* window, Paddle* paddle);
 
 	void update();
 
@@ -23,7 +23,7 @@ public:
 	float top();
 	float bottom();
 
-	sf::Texture texture;
+	sf::Texture* texture;
 	sf::Sprite sprite;
 
 private:
