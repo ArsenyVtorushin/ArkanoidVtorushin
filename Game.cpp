@@ -87,8 +87,8 @@ void Game::initWindow()
 }
 void Game::initTextures()
 {
-	this->paddleTexture.loadFromFile("Assets/Paddle2.png");
-	this->ballTexture.loadFromFile("Assets/Ball.png");
+	this->paddleTexture.loadFromFile("Assets/Paddle3.png");
+	this->ballTexture.loadFromFile("Assets/Ball2.png");
 	this->wallsTexture.loadFromFile("Assets/Walls.png");
 	this->logoTexture.loadFromFile("Assets/ArkanoidLogo.png");
 	this->heartTexture.loadFromFile("Assets/Heart.png");

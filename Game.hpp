@@ -1,6 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
-#include "Ball.hpp"
+#include "MainMenu.hpp"
 
 class Game
 {

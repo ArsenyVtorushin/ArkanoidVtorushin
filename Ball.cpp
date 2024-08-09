@@ -6,7 +6,6 @@ Ball::Ball(sf::Texture* texture, sf::RenderWindow* window, Paddle* paddle)
 	this->paddle = paddle;
 	this->texture = texture;
 	this->sprite.setTexture(*texture);
-	this->sprite.setScale(2.1f, 2.1f);
 	this->sprite.setOrigin(this->sprite.getTexture()->getSize().x * 0.5f, this->sprite.getTexture()->getSize().y * 0.5f);
 	this->sprite.setPosition(1000.f, (*this->window).getSize().y - 80.f);
 	this->radius = this->sprite.getTexture()->getSize().x * 0.5f;
@@ -16,7 +15,7 @@ Ball::Ball(sf::Texture* texture, sf::RenderWindow* window, Paddle* paddle)
 
 void Ball::update()
 {
-	this->sprite.setPosition((*this->paddle).x(), (*this->paddle).y()/* - this->radius*/);
+	this->sprite.setPosition((*this->paddle).x(), (*this->paddle).top() - this->radius);
 }
 
 //Getters / Setters

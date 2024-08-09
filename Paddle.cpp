@@ -7,7 +7,6 @@ Paddle::Paddle(sf::Texture* texture, sf::RenderWindow* window)
 	this->HP = this->HPMax;
 	this->texture = texture;
 	this->sprite.setTexture(*texture);
-	this->sprite.setScale(2.f, 2.f);
 	this->sprite.setOrigin(this->sprite.getTexture()->getSize().x * 0.5, this->sprite.getTexture()->getSize().y * 0.5);
 	this->sprite.setPosition(1000.f, (*this->window).getSize().y - 80.f);
 	this->xPositions.push_back(this->sprite.getPosition().x);
