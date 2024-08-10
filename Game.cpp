@@ -21,7 +21,10 @@ Game::~Game()
 	delete this->levelOneText;
 	delete this->levelTwoText;
 	delete this->finalRoundText;
-	delete this->pressStartText;
+	//delete this->pressStartText;
+	delete this->mainMenu;
+	delete this->pauseMenu;
+	delete this->gameOverMenu;
 }
 
 // Functions
@@ -54,7 +57,8 @@ void Game::render()
 {
 	this->window->clear();
 
-	this->window->draw(this->paddle->sprite);
+	this->mainMenu->draw(*this->window);
+	/*this->window->draw(this->paddle->sprite);
 	this->window->draw(this->ball->sprite);
 	this->window->draw(this->walls->sprite);
 	this->window->draw(this->logo->sprite);
@@ -64,7 +68,7 @@ void Game::render()
 		this->window->draw((*this->hearts)[i].sprite);
 	}
 
-	this->window->draw(this->levelOneText->text);
+	this->window->draw(this->levelOneText->text);*/
 
 	this->window->display();
 }
@@ -77,6 +81,7 @@ void Game::init()
 	this->initTextures();
 	this->initSprites();
 	this->initText();
+	this->initMenus();
 }
 
 void Game::initWindow()
@@ -100,6 +105,7 @@ void Game::initSprites()
 	this->walls = new Walls(&this->wallsTexture);
 	this->logo = new Logo(&this->logoTexture, this->window);
 	this->hearts = new std::vector<Heart>(3, &this->heartTexture);
+
 	for (int i = 0; i < this->hearts->size(); i++)
 	{
 		(*this->hearts)[i].sprite.setPosition(this->window->getSize().x - 700 + i * (*this->hearts)[i].sprite.getGlobalBounds().width, 500);
@@ -119,8 +125,13 @@ void Game::initText()
 	this->finalRoundText = new MyText(this->font, "Final Round", this->window);
 	this->finalRoundText->text.setPosition((*this->window).getSize().x - 700, 400);
 
-	this->pressStartText = new MyText(this->font, "- Press 'space' to start -", this->window);
+	/*this->pressStartText = new MyText(this->font, "- Press 'space' to start -", this->window);
 	this->pressStartText->text.setOrigin(this->pressStartText->text.getGlobalBounds().width / 2, this->pressStartText->text.getGlobalBounds().height / 2);
-	this->pressStartText->text.setPosition((*this->window).getSize().x / 2, (*this->window).getSize().y / 2);
-
+	this->pressStartText->text.setPosition((*this->window).getSize().x / 2, (*this->window).getSize().y / 2);*/
+}
+void Game::initMenus()
+{
+	this->mainMenu = new MainMenu(this->font, this->window);
+	this->pauseMenu = new PauseMenu();
+	this->gameOverMenu = new GameOverMenu();
 }

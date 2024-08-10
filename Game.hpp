@@ -35,7 +35,11 @@ private:
 	MyText* levelOneText;
 	MyText* levelTwoText;
 	MyText* finalRoundText;
-	MyText* pressStartText;
+	//MyText* pressStartText;
+
+	MainMenu* mainMenu;
+	PauseMenu* pauseMenu;
+	GameOverMenu* gameOverMenu;
 
 	//Initialization
 
@@ -44,6 +48,7 @@ private:
 	void initTextures();
 	void initSprites();
 	void initText();
+	void initMenus();
 
 };
 

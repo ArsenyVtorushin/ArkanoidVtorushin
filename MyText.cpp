@@ -2,6 +2,7 @@
 
 MyText::MyText(sf::Font* font, std::string string, sf::RenderWindow* window)
 {
+	this->window = window;
 	this->font = *font;
 	this->text.setFont(*font);
 	this->text.setString(string);

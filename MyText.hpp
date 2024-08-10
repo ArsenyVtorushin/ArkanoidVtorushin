@@ -10,6 +10,10 @@ public:
 
 	sf::Font font;
 	sf::Text text;
+
+private:
+
+	sf::RenderWindow* window;
 };
 
 #endif // !MYTEXT_HPP

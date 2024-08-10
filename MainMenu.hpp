@@ -7,14 +7,18 @@ class MainMenu
 {
 public:
 
-	MainMenu(float width, float height, sf::Font& font);
+	MainMenu(sf::Font* font, sf::RenderWindow* window);
+
+	void draw(sf::RenderWindow& window);
+	void MoveUp();
+	void MoveDown();
 
 private:
 
-	int maxNumberOfItems = 3;
 	int selectedItemIndex;
-	sf::Font font;
-	sf::Text menu[maxNumberOfItems];
+	sf::Font* font;
+	sf::Text menu[MAX_NUMBER_OF_ITEMS];
+	sf::RenderWindow* window;
 };
 
 #endif // !MAINMENU_HPP
