@@ -23,8 +23,8 @@ Game::~Game()
 	delete this->finalRoundText;
 	//delete this->pressStartText;
 	delete this->mainMenu;
-	delete this->pauseMenu;
-	delete this->gameOverMenu;
+	//delete this->pauseMenu;
+	//delete this->gameOverMenu;
 }
 
 // Functions
@@ -42,15 +42,17 @@ void Game::update()
 {
 	while (this->window->pollEvent(this->event))
 	{
-		if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape)
+		if (this->event.type == sf::Event::Closed || this->event.key.code == sf::Keyboard::Escape)
 		{
 			this->window->close();
 		}
+
+		this->mainMenu->update(this->event);
 	}
 
+
 	this->paddle->update();
-	this->ball->update();
-	
+	this->ball->update();	
 }
 
 void Game::render()
@@ -132,6 +134,6 @@ void Game::initText()
 void Game::initMenus()
 {
 	this->mainMenu = new MainMenu(this->font, this->window);
-	this->pauseMenu = new PauseMenu();
-	this->gameOverMenu = new GameOverMenu();
+	//this->pauseMenu = new PauseMenu();
+	//this->gameOverMenu = new GameOverMenu();
 }

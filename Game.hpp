@@ -38,8 +38,8 @@ private:
 	//MyText* pressStartText;
 
 	MainMenu* mainMenu;
-	PauseMenu* pauseMenu;
-	GameOverMenu* gameOverMenu;
+	//PauseMenu* pauseMenu;
+	//GameOverMenu* gameOverMenu;
 
 	//Initialization
 

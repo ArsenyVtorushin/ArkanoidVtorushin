@@ -9,9 +9,13 @@ public:
 
 	MainMenu(sf::Font* font, sf::RenderWindow* window);
 
+	void update(sf::Event& sfEvent);
 	void draw(sf::RenderWindow& window);
 	void MoveUp();
 	void MoveDown();
+	int getSelectedItemIndex();
+
+	bool getStart
 
 private:
 
@@ -19,6 +23,8 @@ private:
 	sf::Font* font;
 	sf::Text menu[MAX_NUMBER_OF_ITEMS];
 	sf::RenderWindow* window;
+
+	bool start, howToPlay, exit;
 };
 
 #endif // !MAINMENU_HPP
