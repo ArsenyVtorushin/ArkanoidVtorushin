@@ -26,6 +26,13 @@ MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window)
 	this->start = false;
 	this->howToPlay = false;
 	this->exit = false;
+
+	this->instructions = new HowToPlay(this->font, this->window);
+}
+
+MainMenu::~MainMenu()
+{
+	delete this->instructions;
 }
 
 void MainMenu::update(sf::Event& sfEvent)
@@ -75,7 +82,6 @@ void MainMenu::MoveUp()
 		this->menu[selectedItemIndex].setOutlineColor(sf::Color::Blue);
 	}
 }
-
 void MainMenu::MoveDown()
 {
 	if (this->selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS)
@@ -89,4 +95,17 @@ void MainMenu::MoveDown()
 int MainMenu::getSelectedItemIndex()
 {
 	return this->selectedItemIndex;
+}
+
+bool MainMenu::getStart()
+{
+	return this->start;
+}
+bool MainMenu::getHowToPlay()
+{
+	return this->howToPlay;
+}
+bool MainMenu::getExit()
+{
+	return this->exit;
 }

@@ -47,19 +47,38 @@ void Game::update()
 			this->window->close();
 		}
 
-		this->mainMenu->update(this->event);
+		if (this->mainMenuBool)
+		{
+			this->mainMenu->update(this->event);
+
+			if (this->mainMenu->getStart() == true)
+			{
+				std::cout << "In development";
+			}
+			else if (this->mainMenu->getHowToPlay() == true)
+			{
+				this->mainMenu->Instructions();// make this thing
+			}
+			else if (this->mainMenu->getExit() == true)
+			{
+				this->window->close();
+			}
+		}
 	}
 
-
 	this->paddle->update();
-	this->ball->update();	
+	this->ball->update();
 }
 
 void Game::render()
 {
 	this->window->clear();
 
-	this->mainMenu->draw(*this->window);
+	if (this->mainMenuBool)
+	{
+		this->mainMenu->draw(*this->window);
+	}
+	
 	/*this->window->draw(this->paddle->sprite);
 	this->window->draw(this->ball->sprite);
 	this->window->draw(this->walls->sprite);
@@ -84,6 +103,7 @@ void Game::init()
 	this->initSprites();
 	this->initText();
 	this->initMenus();
+	this->initBooleans();
 }
 
 void Game::initWindow()
@@ -136,4 +156,8 @@ void Game::initMenus()
 	this->mainMenu = new MainMenu(this->font, this->window);
 	//this->pauseMenu = new PauseMenu();
 	//this->gameOverMenu = new GameOverMenu();
+}
+void Game::initBooleans()
+{
+	this->mainMenuBool = true;
 }
