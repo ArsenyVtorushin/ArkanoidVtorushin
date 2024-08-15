@@ -41,7 +41,11 @@ private:
 	//PauseMenu* pauseMenu;
 	//GameOverMenu* gameOverMenu;
 
+	HowToPlay* instructions;
+
 	bool mainMenuBool;
+
+	bool startBool, howToPlayBool, exitBool;
 
 	//Initialization
 
@@ -51,6 +55,7 @@ private:
 	void initSprites();
 	void initText();
 	void initMenus();
+	void initInstructions();
 	void initBooleans();
 
 };

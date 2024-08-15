@@ -22,54 +22,58 @@ MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window)
 	}
 
 	this->selectedItemIndex = 0;
-
-	this->start = false;
-	this->howToPlay = false;
-	this->exit = false;
-
-	this->instructions = new HowToPlay(this->font, this->window);
 }
 
-MainMenu::~MainMenu()
+void MainMenu::update(sf::Event& sfEvent, bool& mainMenuBool, bool& startBool, bool& howToPlayBool, bool& exitBool)
 {
-	delete this->instructions;
-}
-
-void MainMenu::update(sf::Event& sfEvent)
-{
-	if (sfEvent.type == sf::Event::KeyReleased)
+	if (mainMenuBool)
 	{
-		if (sfEvent.key.code == sf::Keyboard::Up)
+		if (sfEvent.type == sf::Event::KeyReleased)
 		{
-			this->MoveUp();
-		}
-		else if (sfEvent.key.code == sf::Keyboard::Down)
-		{
-			this->MoveDown();
-		}
-		else if (sfEvent.key.code == sf::Keyboard::Return)
-		{
-			if (this->getSelectedItemIndex() == 0)
+			if (sfEvent.key.code == sf::Keyboard::Up)
 			{
-				this->start = true;
+				this->MoveUp();
 			}
-			else if (this->getSelectedItemIndex() == 1)
+			else if (sfEvent.key.code == sf::Keyboard::Down)
 			{
-				this->howToPlay = true;
+				this->MoveDown();
 			}
-			else
+			else if (sfEvent.key.code == sf::Keyboard::Return)
 			{
-				this->exit = true;
+				if (this->getSelectedItemIndex() == 0)
+				{
+					//add the mainMenuBool = false
+					startBool = true; 
+					howToPlayBool = false;
+					exitBool = false;
+				}
+				else if (this->getSelectedItemIndex() == 1)
+				{
+					mainMenuBool = false;
+					startBool = false;
+					howToPlayBool = true;
+					exitBool = false;
+				}
+				else
+				{
+					mainMenuBool = false;
+					startBool = false;
+					howToPlayBool = false;
+					exitBool = true;
+				}
 			}
 		}
 	}
 }
 
-void MainMenu::draw(sf::RenderWindow& window)
+void MainMenu::render(sf::RenderWindow* window, bool& mainMenuBool)
 {
-	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
+	if (mainMenuBool)
 	{
-		window.draw(this->menu[i]);
+		for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
+		{
+			(*window).draw(this->menu[i]);
+		}
 	}
 }
 
@@ -95,17 +99,4 @@ void MainMenu::MoveDown()
 int MainMenu::getSelectedItemIndex()
 {
 	return this->selectedItemIndex;
-}
-
-bool MainMenu::getStart()
-{
-	return this->start;
-}
-bool MainMenu::getHowToPlay()
-{
-	return this->howToPlay;
-}
-bool MainMenu::getExit()
-{
-	return this->exit;
 }

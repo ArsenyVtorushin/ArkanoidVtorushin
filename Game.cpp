@@ -25,6 +25,7 @@ Game::~Game()
 	delete this->mainMenu;
 	//delete this->pauseMenu;
 	//delete this->gameOverMenu;
+	delete this->instructions;
 }
 
 // Functions
@@ -44,25 +45,15 @@ void Game::update()
 	{
 		if (this->event.type == sf::Event::Closed || this->event.key.code == sf::Keyboard::Escape)
 		{
-			this->window->close();
+			(*this->window).close();
 		}
 
-		if (this->mainMenuBool)
-		{
-			this->mainMenu->update(this->event);
+		this->mainMenu->update(this->event, this->mainMenuBool, this->startBool, this->howToPlayBool, this->exitBool);
+		this->instructions->update(this->event, this->howToPlayBool, this->mainMenuBool);
 
-			if (this->mainMenu->getStart() == true)
-			{
-				std::cout << "In development";
-			}
-			else if (this->mainMenu->getHowToPlay() == true)
-			{
-				this->mainMenu->Instructions();// make this thing
-			}
-			else if (this->mainMenu->getExit() == true)
-			{
-				this->window->close();
-			}
+		if (this->exitBool)
+		{
+			(*this->window).close();
 		}
 	}
 
@@ -74,10 +65,8 @@ void Game::render()
 {
 	this->window->clear();
 
-	if (this->mainMenuBool)
-	{
-		this->mainMenu->draw(*this->window);
-	}
+	this->mainMenu->render(this->window, this->mainMenuBool);
+	this->instructions->render(this->window, this->howToPlayBool, this->mainMenuBool);
 	
 	/*this->window->draw(this->paddle->sprite);
 	this->window->draw(this->ball->sprite);
@@ -103,6 +92,7 @@ void Game::init()
 	this->initSprites();
 	this->initText();
 	this->initMenus();
+	this->initInstructions();
 	this->initBooleans();
 }
 
@@ -157,7 +147,15 @@ void Game::initMenus()
 	//this->pauseMenu = new PauseMenu();
 	//this->gameOverMenu = new GameOverMenu();
 }
+void Game::initInstructions()
+{
+	this->instructions = new HowToPlay(this->font, this->window);
+}
 void Game::initBooleans()
 {
 	this->mainMenuBool = true;
+
+	this->startBool = false;
+	this->howToPlayBool = false;
+	this->exitBool = false;
 }
