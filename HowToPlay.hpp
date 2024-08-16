@@ -11,12 +11,11 @@ public:
 	void update(sf::Event& sfEvent, bool& howToPlay, bool& mainMenuBool);
 	void render(sf::RenderWindow* window, bool& howToPlay, bool& mainMenuBool);
 
-	sf::Text getText();
-
 private:
 
 	sf::Text text;
 	sf::Text back;
+	sf::Text pressSpace;
 	sf::Font* font;
 	sf::RenderWindow* window;
 };

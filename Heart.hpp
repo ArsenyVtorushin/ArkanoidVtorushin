@@ -1,6 +1,6 @@
 #ifndef HEARTS_HPP
 #define HEARTS_HPP
-#include "MyText.hpp"
+#include "Brick.hpp"
 
 class Heart
 {

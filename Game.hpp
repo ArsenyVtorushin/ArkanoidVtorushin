@@ -22,20 +22,23 @@ private:
 	sf::Texture paddleTexture;
 	sf::Texture ballTexture;
 	sf::Texture wallsTexture;
-	sf::Texture heartTexture;
 	sf::Texture logoTexture;
+	sf::Texture heartTexture;
+	sf::Texture brickTexture;
 
 	Paddle* paddle;
 	Ball* ball;
 	Walls* walls;
 	Logo* logo;
 	std::vector<Heart>* hearts;
+	std::vector<Brick>* bricksLevel1;
+	std::vector<Brick>* bricksLevel2;
+	std::vector<Brick>* bricksFinalRound;
 
 	sf::Font* font;
 	MyText* levelOneText;
 	MyText* levelTwoText;
 	MyText* finalRoundText;
-	//MyText* pressStartText;
 
 	MainMenu* mainMenu;
 	//PauseMenu* pauseMenu;

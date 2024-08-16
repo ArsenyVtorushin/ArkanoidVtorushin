@@ -26,6 +26,9 @@ Game::~Game()
 	//delete this->pauseMenu;
 	//delete this->gameOverMenu;
 	delete this->instructions;
+	delete this->bricksLevel1;
+	delete this->bricksLevel2;
+	delete this->bricksFinalRound;
 }
 
 // Functions
@@ -109,6 +112,7 @@ void Game::initTextures()
 	this->wallsTexture.loadFromFile("Assets/Walls.png");
 	this->logoTexture.loadFromFile("Assets/ArkanoidLogo.png");
 	this->heartTexture.loadFromFile("Assets/Heart.png");
+	this->brickTexture.loadFromFile("Assets/Block.png");
 }
 void Game::initSprites()
 {
@@ -122,6 +126,8 @@ void Game::initSprites()
 	{
 		(*this->hearts)[i].sprite.setPosition(this->window->getSize().x - 700 + i * (*this->hearts)[i].sprite.getGlobalBounds().width, 500);
 	}
+
+	this->bricksLevel1 = new std::vector<Brick>(44, &this->brickTexture, this->window);
 }
 void Game::initText()
 {
