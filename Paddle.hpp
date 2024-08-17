@@ -9,7 +9,6 @@ public:
 	Paddle(sf::Texture* texture, sf::RenderWindow* window);
 	
 	void update();
-	void NotCrossWalls(sf::Sprite& wall);
 
 	float x();
 	float y();
@@ -26,7 +25,6 @@ private:
 
 	int HP;
 	int HPMax;
-	std::vector<float> xPositions;
 };
 
 #endif // !PADDLE_HPP

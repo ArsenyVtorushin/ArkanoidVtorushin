@@ -1,6 +1,6 @@
 #ifndef BRICK_HPP
 #define BRICK_HPP
-#include "MyText.hpp"
+#include "Includes.hpp"
 
 class Brick
 {

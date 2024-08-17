@@ -9,27 +9,21 @@ Paddle::Paddle(sf::Texture* texture, sf::RenderWindow* window)
 	this->sprite.setTexture(*texture);
 	this->sprite.setOrigin(this->sprite.getTexture()->getSize().x * 0.5, this->sprite.getTexture()->getSize().y * 0.5);
 	this->sprite.setPosition(1000.f, (*this->window).getSize().y - 80.f);
-	this->xPositions.push_back(this->sprite.getPosition().x);
 }
 
 void Paddle::update()
 {
 	this->sprite.setPosition(sf::Mouse::getPosition(*this->window).x, (*this->window).getSize().y - 50.f);
-}
 
-//cook this frickin function
-//                     |
-//                     V
-
-void Paddle::NotCrossWalls(sf::Sprite& wall)
-{
-	this->xPositions.push_back(this->sprite.getPosition().x);
-
-	if (this->sprite.getGlobalBounds().intersects(wall.getGlobalBounds()))
+	if (this->left() <= 312.f)
 	{
-		this->sprite.setPosition(this->xPositions[0], this->sprite.getPosition().y);
+		this->sprite.setPosition(312.f + this->sprite.getGlobalBounds().width * 0.5, this->sprite.getPosition().y);
 	}
-	this->xPositions.erase(this->xPositions.begin());
+
+	if (this->right() >= 1113.f)
+	{
+		this->sprite.setPosition(1113.f - this->sprite.getGlobalBounds().width * 0.5, this->sprite.getPosition().y);
+	}
 }
 
 float Paddle::x()

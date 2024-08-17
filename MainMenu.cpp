@@ -42,7 +42,7 @@ void MainMenu::update(sf::Event& sfEvent, bool& mainMenuBool, bool& startBool, b
 			{
 				if (this->getSelectedItemIndex() == 0)
 				{
-					//add the mainMenuBool = false
+					mainMenuBool = false;
 					startBool = true; 
 					howToPlayBool = false;
 					exitBool = false;

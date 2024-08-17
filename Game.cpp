@@ -12,23 +12,12 @@ Game::Game()
 Game::~Game()
 {
 	delete this->window;
-	delete this->paddle;
-	delete this->ball;
-	delete this->walls;
-	delete this->hearts;
-	delete this->logo;
 	delete this->font;
-	delete this->levelOneText;
-	delete this->levelTwoText;
-	delete this->finalRoundText;
-	//delete this->pressStartText;
 	delete this->mainMenu;
 	//delete this->pauseMenu;
 	//delete this->gameOverMenu;
 	delete this->instructions;
-	delete this->bricksLevel1;
-	delete this->bricksLevel2;
-	delete this->bricksFinalRound;
+	delete this->levelOne;
 }
 
 // Functions
@@ -51,37 +40,26 @@ void Game::update()
 			(*this->window).close();
 		}
 
-		this->mainMenu->update(this->event, this->mainMenuBool, this->startBool, this->howToPlayBool, this->exitBool);
-		this->instructions->update(this->event, this->howToPlayBool, this->mainMenuBool);
+		//this->mainMenu->update(this->event, this->mainMenuBool, this->startBool, this->howToPlayBool, this->exitBool);
+		//this->instructions->update(this->event, this->howToPlayBool, this->mainMenuBool);
 
-		if (this->exitBool)
+	 	if (this->exitBool)
 		{
 			(*this->window).close();
 		}
 	}
 
-	this->paddle->update();
-	this->ball->update();
+	this->levelOne->update();
 }
 
 void Game::render()
 {
 	this->window->clear();
 
-	this->mainMenu->render(this->window, this->mainMenuBool);
-	this->instructions->render(this->window, this->howToPlayBool, this->mainMenuBool);
+	//this->mainMenu->render(this->window, this->mainMenuBool);
+	//this->instructions->render(this->window, this->howToPlayBool, this->mainMenuBool);
+	this->levelOne->render();
 	
-	/*this->window->draw(this->paddle->sprite);
-	this->window->draw(this->ball->sprite);
-	this->window->draw(this->walls->sprite);
-	this->window->draw(this->logo->sprite);
-
-	for (int i = 0; i < this->hearts->size(); i++)
-	{
-		this->window->draw((*this->hearts)[i].sprite);
-	}
-
-	this->window->draw(this->levelOneText->text);*/
 
 	this->window->display();
 }
@@ -91,11 +69,10 @@ void Game::render()
 void Game::init()
 {
 	this->initWindow();
-	this->initTextures();
-	this->initSprites();
-	this->initText();
+	this->initFont();
 	this->initMenus();
 	this->initInstructions();
+	this->initLevels();
 	this->initBooleans();
 }
 
@@ -105,47 +82,11 @@ void Game::initWindow()
 	this->window->setFramerateLimit(60);
 	this->window->setMouseCursorVisible(false);
 }
-void Game::initTextures()
-{
-	this->paddleTexture.loadFromFile("Assets/Paddle3.png");
-	this->ballTexture.loadFromFile("Assets/Ball2.png");
-	this->wallsTexture.loadFromFile("Assets/Walls.png");
-	this->logoTexture.loadFromFile("Assets/ArkanoidLogo.png");
-	this->heartTexture.loadFromFile("Assets/Heart.png");
-	this->brickTexture.loadFromFile("Assets/Block.png");
-}
-void Game::initSprites()
-{
-	this->paddle = new Paddle(&this->paddleTexture, this->window);
-	this->ball = new Ball(&this->ballTexture, this->window, this->paddle);
-	this->walls = new Walls(&this->wallsTexture);
-	this->logo = new Logo(&this->logoTexture, this->window);
-	this->hearts = new std::vector<Heart>(3, &this->heartTexture);
-
-	for (int i = 0; i < this->hearts->size(); i++)
-	{
-		(*this->hearts)[i].sprite.setPosition(this->window->getSize().x - 700 + i * (*this->hearts)[i].sprite.getGlobalBounds().width, 500);
-	}
-
-	this->bricksLevel1 = new std::vector<Brick>(44, &this->brickTexture, this->window);
-}
-void Game::initText()
+void Game::initFont()
 {
 	this->font = new sf::Font;
 	this->font->loadFromFile("Assets/font.ttf");
 
-	this->levelOneText = new MyText(this->font, "Level 1", this->window);
-	this->levelOneText->text.setPosition((*this->window).getSize().x - 700, 400);
-
-	this->levelTwoText = new MyText(this->font, "Level 2", this->window);
-	this->levelTwoText->text.setPosition((*this->window).getSize().x - 700, 400);
-
-	this->finalRoundText = new MyText(this->font, "Final Round", this->window);
-	this->finalRoundText->text.setPosition((*this->window).getSize().x - 700, 400);
-
-	/*this->pressStartText = new MyText(this->font, "- Press 'space' to start -", this->window);
-	this->pressStartText->text.setOrigin(this->pressStartText->text.getGlobalBounds().width / 2, this->pressStartText->text.getGlobalBounds().height / 2);
-	this->pressStartText->text.setPosition((*this->window).getSize().x / 2, (*this->window).getSize().y / 2);*/
 }
 void Game::initMenus()
 {
@@ -157,6 +98,10 @@ void Game::initInstructions()
 {
 	this->instructions = new HowToPlay(this->font, this->window);
 }
+void Game::initLevels()
+{
+	this->levelOne = new Level(this->window, 11, 4, &this->startBool, &this->levelOneBool);
+}
 void Game::initBooleans()
 {
 	this->mainMenuBool = true;
@@ -164,4 +109,8 @@ void Game::initBooleans()
 	this->startBool = false;
 	this->howToPlayBool = false;
 	this->exitBool = false;
+
+	this->levelOneBool = false;
+	this->levelTwoBool = false;
+	this->FinalRoundBool = false;
 }

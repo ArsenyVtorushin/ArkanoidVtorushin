@@ -1,6 +1,6 @@
 #ifndef GAMEOVERMENU_HPP
 #define GAMEOVERMENU_HPP
-#include "Ball.hpp"
+#include "Level.hpp"
 
 class GameOverMenu
 {

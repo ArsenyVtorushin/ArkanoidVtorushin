@@ -8,6 +8,8 @@ public:
 
 	Walls(sf::Texture* texture);
 
+	
+
 	sf::Texture* texture;
 	sf::Sprite sprite;
 };
