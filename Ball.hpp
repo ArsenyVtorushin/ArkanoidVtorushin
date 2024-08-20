@@ -6,12 +6,15 @@ class Ball
 {
 public:
 
-	Ball(sf::Texture* texture, sf::RenderWindow* window, Paddle* paddle);
+	Ball(sf::Texture* texture, sf::RenderWindow* window, Paddle* paddle, unsigned int* levelNumberText_cooldown);
 
 	void update();
 
-	void setSpeed(float speed);
-	float getSpeed();
+	void setXSpeed(float speed);
+	float getXSpeed();
+
+	void setYSpeed(float speed);
+	float getYSpeed();
 
 	void setVelocity(sf::Vector2f velocity);
 	sf::Vector2f getVelocity();
@@ -31,9 +34,11 @@ private:
 	sf::RenderWindow* window;
 	Paddle* paddle;
 
-	float speed;
+	float xSpeed, ySpeed;
 	sf::Vector2f velocity;
 	float radius;
+
+	unsigned int* levelNumberText_cooldown;
 };
 
 #endif // !BALL_HPP

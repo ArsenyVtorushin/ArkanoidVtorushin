@@ -1,9 +1,13 @@
 #include "HowToPlay.hpp"
 
-HowToPlay::HowToPlay(sf::Font* font, sf::RenderWindow* window)
+HowToPlay::HowToPlay(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent, bool* mainMenuBool, bool* howToPlayBool)
 {
 	this->font = font;
 	this->window = window;
+	this->sfEvent = sfEvent;
+
+	this->mainMenuBool = mainMenuBool;
+	this->howToPlayBool = howToPlayBool;
 
 	this->text.setFont(*font);
 	this->text.setString("You have to destroy all of the bricks\nby bouncing off the Ball.\n\nUse the mouse to move the Paddle.\n\nUse the 'space' button to pause the game");
@@ -26,14 +30,14 @@ HowToPlay::HowToPlay(sf::Font* font, sf::RenderWindow* window)
 	this->pressSpace.setScale(1.f, 1.f);
 }
 
-void HowToPlay::update(sf::Event& sfEvent, bool& howToPlay, bool& mainMenuBool)
+void HowToPlay::update()
 {
-	if (howToPlay)
+	if (*this->howToPlayBool)
 	{
-		if (sfEvent.type == sf::Event::KeyReleased && sfEvent.key.code == sf::Keyboard::Space)
+		if ((*this->sfEvent).type == sf::Event::KeyReleased && (*this->sfEvent).key.code == sf::Keyboard::Space)
 		{
-			howToPlay = false;
-			mainMenuBool = true;
+			*this->howToPlayBool = false;
+			*this->mainMenuBool = true;
 		}
 	}
 }
@@ -42,13 +46,13 @@ void HowToPlay::update(sf::Event& sfEvent, bool& howToPlay, bool& mainMenuBool)
 // is the same as the KeyReleased/Return thing in here (update) 
 // upd: YES
 
-void HowToPlay::render(sf::RenderWindow* window, bool& howToPlay, bool& mainMenuBool)
+void HowToPlay::render()
 {
-	if (howToPlay)
+	if (*this->howToPlayBool)
 	{
-		(*window).draw(this->text);
-		(*window).draw(this->back);
-		(*window).draw(this->pressSpace);
+		(*this->window).draw(this->text);
+		(*this->window).draw(this->back);
+		(*this->window).draw(this->pressSpace);
 	}
 }
 

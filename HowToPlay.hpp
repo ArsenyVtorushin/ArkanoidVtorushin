@@ -6,18 +6,23 @@ class HowToPlay
 {
 public:
 
-	HowToPlay(sf::Font* font, sf::RenderWindow* window);
+	HowToPlay(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent, bool*mainMenuBool, bool* howToPlayBool);
 
-	void update(sf::Event& sfEvent, bool& howToPlay, bool& mainMenuBool);
-	void render(sf::RenderWindow* window, bool& howToPlay, bool& mainMenuBool);
+	void update();
+	void render();
 
 private:
+
+	sf::Font* font;
+	sf::RenderWindow* window;
+	sf::Event* sfEvent;
+
+	bool* mainMenuBool;
+	bool* howToPlayBool;
 
 	sf::Text text;
 	sf::Text back;
 	sf::Text pressSpace;
-	sf::Font* font;
-	sf::RenderWindow* window;
 };
 
 #endif // !HOWTOPLAY_HPP

@@ -7,10 +7,10 @@ class MainMenu
 {
 public:
 
-	MainMenu(sf::Font* font, sf::RenderWindow* window);
+	MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent, bool* mainMenuBool, bool* startGameBool, bool* howToPlayBool, bool* exitBool);
 
-	void update(sf::Event& sfEvent, bool& mainMenuBool, bool& startBool, bool& howToPlayBool, bool& exitBool);
-	void render(sf::RenderWindow* window, bool& mainMenuBool);
+	void update();
+	void render();
 	void MoveUp();
 	void MoveDown();
 
@@ -19,9 +19,14 @@ public:
 private:
 
 	int selectedItemIndex;
+	
 	sf::Font* font;
 	sf::Text menu[MAX_NUMBER_OF_ITEMS];
 	sf::RenderWindow* window;
+	sf::Event* sfEvent;
+
+	bool* mainMenuBool;
+	bool* startGameBool, *howToPlayBool, *exitBool;
 };
 
 #endif // !MAINMENU_HPP

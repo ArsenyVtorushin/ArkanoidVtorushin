@@ -2,11 +2,17 @@
 #define LEVEL_HPP
 #include "Ball.hpp"
 
+#define X_HEARTS_POS this->window->getSize().x - 700 + (i + 1) * (*this->hearts)[i].sprite.getGlobalBounds().width
+#define Y_HEARTS_POS 500
+
+#define X_BRICKS_POS (this->walls->left() + 20) + (((*this->bricks)[i][j].sprite.getGlobalBounds().width + 13) * j)
+#define Y_BRICKS_POS (this->walls->top() + 20) + (((*this->bricks)[i][j].sprite.getGlobalBounds().height + 13) * i) 
+
 class Level
 {
 public:
 
-	Level(sf::RenderWindow* window, int amountBricksX, int amountBricksY, bool* startBool, bool* levelBool);
+	Level(sf::RenderWindow* window, int amountBricksX, int amountBricksY, bool* startGameBool, sf::Text* levelNumberText);
 	~Level();
 
 	void update();
@@ -16,14 +22,17 @@ public:
 	void initTextures();
 	void initSprites();
 
+	void setDarkerColor();
+	void resetDarkerColor();
+
 	bool getWin();
 
 private:
 
-	int xBricks, yBricks;
+	int rowBricks, columnBricks;
 	int allBricks;
 
-	bool* startBool, levelBool;
+	bool* startGameBool, startLevelBool;
 	bool win;
 
 	sf::RenderWindow* window;
@@ -41,7 +50,11 @@ private:
 	Walls* walls; 
 	Logo* logo;
 	std::vector<Heart>* hearts;
-	std::vector<Brick>* bricks;
+	std::vector<std::vector<Brick>>* bricks;
+
+	sf::Text* levelNumberText;
+
+	unsigned int levelNumberText_cooldown;
 };
 
 #endif // !LEVEL_HPP

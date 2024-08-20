@@ -26,6 +26,16 @@ void Paddle::update()
 	}
 }
 
+int Paddle::getHPMax()
+{
+	return this->HPMax;
+}
+
+int Paddle::getHP()
+{
+	return this->HP;
+}
+
 float Paddle::x()
 {
 	return this->sprite.getPosition().x;

@@ -18,28 +18,26 @@ private:
 	//Variables
 
 	sf::RenderWindow* window;
-	sf::Event event;
-
+	sf::Event sfEvent;
 	sf::Font* font;
+
+	sf::Text levelOneText, levelTwoText, finalRoundText;
 
 	MainMenu* mainMenu;
 	//PauseMenu* pauseMenu;
 	//GameOverMenu* gameOverMenu;
-
-	HowToPlay* instructions;
-
+	HowToPlay* howToPlay;
 	Level* levelOne;
 
 	bool mainMenuBool;
-	bool startBool, howToPlayBool, exitBool;
-	bool levelOneBool, levelTwoBool, FinalRoundBool, congratsBool; 
+	bool startGameBool, howToPlayBool, exitBool;
 
 	//Initialization
 
 	void init();
 
 	void initWindow();
-	void initFont();
+	void initText();
 	void initMenus();
 	void initInstructions();
 	void initLevels();

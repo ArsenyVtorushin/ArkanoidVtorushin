@@ -10,6 +10,9 @@ public:
 	
 	void update();
 
+	int getHPMax();
+	int getHP();
+
 	float x();
 	float y();
 	float left();

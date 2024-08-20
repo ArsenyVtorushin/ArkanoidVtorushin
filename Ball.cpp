@@ -1,32 +1,75 @@
 #include "Ball.hpp"
 
-Ball::Ball(sf::Texture* texture, sf::RenderWindow* window, Paddle* paddle)
+Ball::Ball(sf::Texture* texture, sf::RenderWindow* window, Paddle* paddle, unsigned int* levelNumberText_cooldown)
 {
 	this->window = window;
 	this->paddle = paddle;
 	this->texture = texture;
+
 	this->sprite.setTexture(*texture);
+	this->sprite.setScale(1.2f, 1.2f);
 	this->sprite.setOrigin(this->sprite.getTexture()->getSize().x * 0.5f, this->sprite.getTexture()->getSize().y * 0.5f);
-	this->sprite.setPosition(1000.f, (*this->window).getSize().y - 80.f);
+
+	this->sprite.setPosition((*this->paddle).x(), (*this->paddle).top() - this->radius - 5);
 	this->radius = this->sprite.getTexture()->getSize().x * 0.5f;
-	this->speed = 8.f;
-	this->velocity = { (-this->speed), (-this->speed) };
+	this->xSpeed = -9.f;
+	this->ySpeed = -9.f;
+	this->velocity = { this->xSpeed, -this->ySpeed };
+
+	this->levelNumberText_cooldown = levelNumberText_cooldown;
 }
 
 void Ball::update()
 {
-	this->sprite.setPosition((*this->paddle).x(), (*this->paddle).top() - this->radius);
+	if (*this->levelNumberText_cooldown > 0)
+	{
+		this->sprite.setPosition((*this->paddle).x(), (*this->paddle).top() - this->radius - 5);
+	}
+	else
+	{
+		if (this->left() <= 312)
+		{
+			this->setXSpeed(-(this->getXSpeed()));
+		}
+		
+		if (this->top() <= 139)
+		{
+			this->setYSpeed(-(this->getYSpeed()));
+		}
+
+		if (this->right() >= 1113)
+		{
+			this->setXSpeed(-(this->getXSpeed()));
+		}
+
+		if (this->bottom() >= this->paddle->top())
+		{
+			this->setYSpeed(-(this->getYSpeed()));
+		}
+		
+		this->setVelocity({ this->xSpeed, this->ySpeed });
+		this->sprite.move(this->velocity);
+	}
 }
 
 //Getters / Setters
 
-void Ball::setSpeed(float speed)
+void Ball::setXSpeed(float speed)
 {
-	this->speed = speed;
+	this->xSpeed = speed;
 }
-float Ball::getSpeed()
+float Ball::getXSpeed()
 {
-	return this->speed;
+	return this->xSpeed;
+}
+
+void Ball::setYSpeed(float speed)
+{
+	this->ySpeed = speed;
+}
+float Ball::getYSpeed()
+{
+	return this->ySpeed;
 }
 
 void Ball::setVelocity(sf::Vector2f velocity)

@@ -1,14 +1,16 @@
 #include "Level.hpp"
 
-Level::Level(sf::RenderWindow* window, int amountBricksX, int amountBricksY, bool* startBool, bool* levelBool)
+Level::Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* startGameBool, sf::Text* levelNumberText)
 {
 	this->window = window;
-	this->xBricks = amountBricksX;
-	this->yBricks = amountBricksY;
-	this->allBricks = amountBricksY * amountBricksY;
-	this->startBool = startBool;
-	this->levelBool = levelBool;
+	this->rowBricks = rowBricks;
+	this->columnBricks = columnBricks;
+	this->allBricks = rowBricks * columnBricks;
+	this->startGameBool = startGameBool;
+	this->startLevelBool = false;
 	this->win = false;
+	this->levelNumberText = levelNumberText;
+	this->levelNumberText_cooldown = 120;
 
 	this->init();
 }
@@ -25,21 +27,32 @@ Level::~Level()
 
 void Level::update()
 {
-	if (this->startBool)
+	if (*this->startGameBool)
 	{
-		this->paddle->update();
-		this->ball->update();
-
-		if (this->bricks->empty())
+		if (this->levelNumberText_cooldown > 0)
 		{
-			this->win = true;
+			this->levelNumberText_cooldown--;
+			
+			this->setDarkerColor();
+		}
+		else
+		{
+			this->resetDarkerColor();
+
+			this->paddle->update();
+			this->ball->update();
+
+			if (this->bricks->empty())
+			{
+				this->win = true;
+			}
 		}
 	}
 }
 
 void Level::render()
 {
-	if (this->startBool)
+	if (*this->startGameBool)
 	{
 		this->window->draw(this->paddle->sprite);
 		this->window->draw(this->ball->sprite);
@@ -49,6 +62,19 @@ void Level::render()
 		for (int i = 0; i < this->hearts->size(); i++)
 		{
 			this->window->draw((*this->hearts)[i].sprite);
+		}
+
+		for (int i = 0; i < this->rowBricks; i++)
+		{
+			for (int j = 0; j < this->columnBricks; j++)
+			{
+				this->window->draw((*this->bricks)[i][j].sprite);
+			}
+		}
+
+		if (this->levelNumberText_cooldown > 0)
+		{
+			this->window->draw(*this->levelNumberText);
 		}
 	}
 }
@@ -66,30 +92,70 @@ void Level::initTextures()
 	this->wallsTexture.loadFromFile("Assets/Walls.png");
 	this->logoTexture.loadFromFile("Assets/ArkanoidLogo.png");
 	this->heartTexture.loadFromFile("Assets/Heart.png");
-	this->brickTexture.loadFromFile("Assets/Block.png");
+	this->brickTexture.loadFromFile("Assets/Brick.png");
 }
 void Level::initSprites()
 {
 	this->paddle = new Paddle(&this->paddleTexture, this->window);
-	this->ball = new Ball(&this->ballTexture, this->window, this->paddle);
+	this->ball = new Ball(&this->ballTexture, this->window, this->paddle, &this->levelNumberText_cooldown);
 	this->walls = new Walls(&this->wallsTexture);
 	this->logo = new Logo(&this->logoTexture, this->window);
-	this->hearts = new std::vector<Heart>(3, &this->heartTexture);
+	this->hearts = new std::vector<Heart>(this->paddle->getHPMax(), &this->heartTexture);
+	this->bricks = new std::vector<std::vector<Brick>>(this->rowBricks, std::vector<Brick>(this->columnBricks, { &this->brickTexture }));
 
 	for (int i = 0; i < this->hearts->size(); i++)
 	{
-		(*this->hearts)[i].sprite.setPosition(this->window->getSize().x - 700 + i * (*this->hearts)[i].sprite.getGlobalBounds().width, 500);
+		(*this->hearts)[i].sprite.setPosition(X_HEARTS_POS, Y_HEARTS_POS);
 	}
 
-	this->bricks = new std::vector<Brick>(this->allBricks, { &this->brickTexture, this->window });
-
-	/*for (int i = 0; i < this->xBricks; i++)
+	for (int i = 0; i < this->rowBricks; i++)
 	{
-		for (int j = 0; j < this->yBricks; j++)
+		for (int j = 0; j < this->columnBricks; j++)
 		{
-			(*this->bricks)[i].sprite.setPosition()
+			(*this->bricks)[i][j].sprite.setPosition(X_BRICKS_POS, Y_BRICKS_POS);
 		}
-	}*/
+	}
+}
+
+void Level::setDarkerColor()
+{
+	this->paddle->sprite.setColor(sf::Color(255, 255, 255, 128));
+	this->ball->sprite.setColor(sf::Color(255, 255, 255, 128));
+	this->walls->sprite.setColor(sf::Color(255, 255, 255, 128));
+	this->logo->sprite.setColor(sf::Color(255, 255, 255, 128));
+
+	for (int i = 0; i < this->hearts->size(); i++)
+	{
+		(*this->hearts)[i].sprite.setColor(sf::Color(255, 255, 255, 128));
+	}
+
+	for (int i = 0; i < this->rowBricks; i++)
+	{
+		for (int j = 0; j < this->columnBricks; j++)
+		{
+			(*this->bricks)[i][j].sprite.setColor(sf::Color(255, 255, 255, 128));
+		}
+	}
+}
+void Level::resetDarkerColor()
+{
+	this->paddle->sprite.setColor(sf::Color(255, 255, 255, 255));
+	this->ball->sprite.setColor(sf::Color(255, 255, 255, 255));
+	this->walls->sprite.setColor(sf::Color(255, 255, 255, 255));
+	this->logo->sprite.setColor(sf::Color(255, 255, 255, 255));
+
+	for (int i = 0; i < this->hearts->size(); i++)
+	{
+		(*this->hearts)[i].sprite.setColor(sf::Color(255, 255, 255, 255));
+	}
+
+	for (int i = 0; i < this->rowBricks; i++)
+	{
+		for (int j = 0; j < this->columnBricks; j++)
+		{
+			(*this->bricks)[i][j].sprite.setColor(sf::Color(255, 255, 255, 255));
+		}
+	}
 }
 
 bool Level::getWin()

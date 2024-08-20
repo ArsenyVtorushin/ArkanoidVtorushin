@@ -10,8 +10,6 @@ public:
 
 	sf::Texture* texture;
 	sf::Sprite sprite;
-
-private:
 };
 
 #endif // !HEARTS_HPP

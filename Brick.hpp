@@ -6,14 +6,10 @@ class Brick
 {
 public:
 
-	Brick(sf::Texture* texture, sf::RenderWindow* window);
+	Brick(sf::Texture* texture);
 
 	sf::Texture* texture;
 	sf::Sprite sprite;
-
-private:
-
-	sf::RenderWindow* window;
 };
 
 #endif // !BRICK_HPP

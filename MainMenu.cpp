@@ -1,9 +1,15 @@
 #include "MainMenu.hpp"
 
-MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window)
+MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent, bool* mainMenuBool, bool* startGameBool, bool* howToPlayBool, bool* exitBool)
 {	
 	this->font = font;
 	this->window = window;
+	this->sfEvent = sfEvent;
+
+	this->mainMenuBool = mainMenuBool;
+	this->startGameBool = startGameBool;
+	this->howToPlayBool = howToPlayBool;
+	this->exitBool = exitBool;
 	
 	this->menu[0].setString("Start");
 	this->menu[0].setOutlineColor(sf::Color::Blue);
@@ -24,55 +30,54 @@ MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window)
 	this->selectedItemIndex = 0;
 }
 
-void MainMenu::update(sf::Event& sfEvent, bool& mainMenuBool, bool& startBool, bool& howToPlayBool, bool& exitBool)
+void MainMenu::update()
 {
-	if (mainMenuBool)
+	if (this->mainMenuBool)
 	{
-		if (sfEvent.type == sf::Event::KeyReleased)
+		if ((*this->sfEvent).type == sf::Event::KeyReleased)
 		{
-			if (sfEvent.key.code == sf::Keyboard::Up)
+			if ((*this->sfEvent).key.code == sf::Keyboard::Up)
 			{
 				this->MoveUp();
 			}
-			else if (sfEvent.key.code == sf::Keyboard::Down)
+			else if ((*this->sfEvent).key.code == sf::Keyboard::Down)
 			{
 				this->MoveDown();
 			}
-			else if (sfEvent.key.code == sf::Keyboard::Return)
+			else if ((*this->sfEvent).key.code == sf::Keyboard::Return)
 			{
 				if (this->getSelectedItemIndex() == 0)
 				{
-					mainMenuBool = false;
-					startBool = true; 
-					howToPlayBool = false;
-					exitBool = false;
+					*this->mainMenuBool = false;
+					*this->startGameBool = true; 
+					*this->howToPlayBool = false;
+					*this->exitBool = false;
 				}
 				else if (this->getSelectedItemIndex() == 1)
 				{
-					mainMenuBool = false;
-					startBool = false;
-					howToPlayBool = true;
-					exitBool = false;
+					*this->mainMenuBool = false;
+					*this->startGameBool = false;
+					*this->howToPlayBool = true;
+					*this->exitBool = false;
 				}
 				else
 				{
-					mainMenuBool = false;
-					startBool = false;
-					howToPlayBool = false;
-					exitBool = true;
+					*this->mainMenuBool = false;
+					*this->startGameBool = false;
+					*this->howToPlayBool = false;
+					*this->exitBool = true;
 				}
 			}
 		}
 	}
 }
-
-void MainMenu::render(sf::RenderWindow* window, bool& mainMenuBool)
+void MainMenu::render()
 {
-	if (mainMenuBool)
+	if (*this->mainMenuBool)
 	{
 		for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
 		{
-			(*window).draw(this->menu[i]);
+			(*this->window).draw(this->menu[i]);
 		}
 	}
 }

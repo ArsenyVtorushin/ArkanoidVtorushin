@@ -16,7 +16,7 @@ Game::~Game()
 	delete this->mainMenu;
 	//delete this->pauseMenu;
 	//delete this->gameOverMenu;
-	delete this->instructions;
+	delete this->howToPlay;
 	delete this->levelOne;
 }
 
@@ -33,15 +33,15 @@ void Game::run()
 
 void Game::update()
 {
-	while (this->window->pollEvent(this->event))
+	while (this->window->pollEvent(this->sfEvent))
 	{
-		if (this->event.type == sf::Event::Closed || this->event.key.code == sf::Keyboard::Escape)
+		if (this->sfEvent.type == sf::Event::Closed || this->sfEvent.key.code == sf::Keyboard::Escape)
 		{
 			(*this->window).close();
 		}
 
-		//this->mainMenu->update(this->event, this->mainMenuBool, this->startBool, this->howToPlayBool, this->exitBool);
-		//this->instructions->update(this->event, this->howToPlayBool, this->mainMenuBool);
+		this->mainMenu->update();
+		this->howToPlay->update();
 
 	 	if (this->exitBool)
 		{
@@ -56,10 +56,9 @@ void Game::render()
 {
 	this->window->clear();
 
-	//this->mainMenu->render(this->window, this->mainMenuBool);
-	//this->instructions->render(this->window, this->howToPlayBool, this->mainMenuBool);
+	this->mainMenu->render();
+	this->howToPlay->render();
 	this->levelOne->render();
-	
 
 	this->window->display();
 }
@@ -69,7 +68,7 @@ void Game::render()
 void Game::init()
 {
 	this->initWindow();
-	this->initFont();
+	this->initText();
 	this->initMenus();
 	this->initInstructions();
 	this->initLevels();
@@ -82,35 +81,48 @@ void Game::initWindow()
 	this->window->setFramerateLimit(60);
 	this->window->setMouseCursorVisible(false);
 }
-void Game::initFont()
+void Game::initText()
 {
 	this->font = new sf::Font;
 	this->font->loadFromFile("Assets/font.ttf");
+	
+	this->levelOneText.setFont(*this->font);
+	this->levelOneText.setString("Level 1");
+	this->levelOneText.setScale(3.f, 3.f);
+	this->levelOneText.setOrigin(this->levelOneText.getLocalBounds().width * 0.5, this->levelOneText.getLocalBounds().height * 0.5);
+	this->levelOneText.setPosition(this->window->getSize().x * 0.5, this->window->getSize().y * 0.5 - 20);
 
+	this->levelTwoText.setFont(*this->font);
+	this->levelTwoText.setString("Level 2");
+	this->levelTwoText.setScale(3.f, 3.f);
+	this->levelTwoText.setOrigin(this->levelTwoText.getLocalBounds().width * 0.5, this->levelTwoText.getLocalBounds().height * 0.5);
+	this->levelTwoText.setPosition(this->window->getSize().x * 0.5, this->window->getSize().y * 0.5 - 20);
+
+	this->finalRoundText.setFont(*this->font);
+	this->finalRoundText.setString("Final Round");
+	this->finalRoundText.setScale(3.f, 3.f);
+	this->finalRoundText.setOrigin(this->finalRoundText.getLocalBounds().width * 0.5, this->finalRoundText.getLocalBounds().height * 0.5);
+	this->finalRoundText.setPosition(this->window->getSize().x * 0.5, this->window->getSize().y * 0.5 - 20);
 }
 void Game::initMenus()
 {
-	this->mainMenu = new MainMenu(this->font, this->window);
+	this->mainMenu = new MainMenu(this->font, this->window, &this->sfEvent, &this->mainMenuBool, &this->startGameBool, &this->howToPlayBool, &this->exitBool);
 	//this->pauseMenu = new PauseMenu();
 	//this->gameOverMenu = new GameOverMenu();
 }
 void Game::initInstructions()
 {
-	this->instructions = new HowToPlay(this->font, this->window);
+	this->howToPlay = new HowToPlay(this->font, this->window, &this->sfEvent, &this->mainMenuBool, &this->howToPlayBool);
 }
 void Game::initLevels()
 {
-	this->levelOne = new Level(this->window, 11, 4, &this->startBool, &this->levelOneBool);
+	this->levelOne = new Level(this->window, 5, 10, &this->startGameBool, &this->levelOneText);
 }
 void Game::initBooleans()
 {
 	this->mainMenuBool = true;
 
-	this->startBool = false;
+	this->startGameBool = false;
 	this->howToPlayBool = false;
 	this->exitBool = false;
-
-	this->levelOneBool = false;
-	this->levelTwoBool = false;
-	this->FinalRoundBool = false;
 }
