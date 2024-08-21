@@ -12,9 +12,8 @@ Ball::Ball(sf::Texture* texture, sf::RenderWindow* window, Paddle* paddle, unsig
 
 	this->sprite.setPosition((*this->paddle).x(), (*this->paddle).top() - this->radius - 5);
 	this->radius = this->sprite.getTexture()->getSize().x * 0.5f;
-	this->xSpeed = -9.f;
-	this->ySpeed = -9.f;
-	this->velocity = { this->xSpeed, -this->ySpeed };
+	this->speed = 9.f;
+	this->velocity = { -(this->speed), -(this->speed) };
 
 	this->levelNumberText_cooldown = levelNumberText_cooldown;
 }
@@ -27,58 +26,37 @@ void Ball::update()
 	}
 	else
 	{
-		if (this->left() <= 312)
-		{
-			this->setXSpeed(-(this->getXSpeed()));
-		}
-		
-		if (this->top() <= 139)
-		{
-			this->setYSpeed(-(this->getYSpeed()));
-		}
-
-		if (this->right() >= 1113)
-		{
-			this->setXSpeed(-(this->getXSpeed()));
-		}
-
-		if (this->bottom() >= this->paddle->top())
-		{
-			this->setYSpeed(-(this->getYSpeed()));
-		}
-		
-		this->setVelocity({ this->xSpeed, this->ySpeed });
 		this->sprite.move(this->velocity);
 	}
 }
 
 //Getters / Setters
 
-void Ball::setXSpeed(float speed)
+void Ball::setSpeed(float speed)
 {
-	this->xSpeed = speed;
+	this->speed = speed;
 }
-float Ball::getXSpeed()
+float Ball::getSpeed()
 {
-	return this->xSpeed;
-}
-
-void Ball::setYSpeed(float speed)
-{
-	this->ySpeed = speed;
-}
-float Ball::getYSpeed()
-{
-	return this->ySpeed;
+	return this->speed;
 }
 
-void Ball::setVelocity(sf::Vector2f velocity)
+void Ball::setVelocityX(float speed)
 {
-	this->velocity = velocity;
+	this->velocity.x = speed;
 }
-sf::Vector2f Ball::getVelocity()
+float Ball::getVelocityX()
 {
-	return this->velocity;
+	return this->velocity.x;
+}
+
+void Ball::setVelocityY(float speed)
+{
+	this->velocity.y = speed;
+}
+float Ball::getVelocityY()
+{
+	return this->velocity.y;
 }
 
 //Additional functions
@@ -93,19 +71,19 @@ float Ball::y()
 }
 float Ball::left()
 {
-	return this->sprite.getPosition().x - this->sprite.getGlobalBounds().width / 2;
+	return this->sprite.getPosition().x - this->sprite.getTexture()->getSize().x * 0.5;
 }
 float Ball::right()
 {
-	return this->sprite.getPosition().x + this->sprite.getGlobalBounds().width / 2;
+	return this->sprite.getPosition().x + this->sprite.getTexture()->getSize().x * 0.5;
 }
 float Ball::top()
 {
-	return this->sprite.getPosition().y - this->sprite.getGlobalBounds().width / 2;
+	return this->sprite.getPosition().y - this->sprite.getTexture()->getSize().y * 0.5;
 }
 float Ball::bottom()
 {
-	return this->sprite.getPosition().y + this->sprite.getGlobalBounds().width / 2;
+	return this->sprite.getPosition().y + this->sprite.getTexture()->getSize().y * 0.5;
 }
 
 

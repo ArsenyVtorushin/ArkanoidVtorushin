@@ -10,14 +10,14 @@ public:
 
 	void update();
 
-	void setXSpeed(float speed);
-	float getXSpeed();
+	void setSpeed(float speed);
+	float getSpeed();
 
-	void setYSpeed(float speed);
-	float getYSpeed();
+	void setVelocityX(float speed);
+	float getVelocityX();
 
-	void setVelocity(sf::Vector2f velocity);
-	sf::Vector2f getVelocity();
+	void setVelocityY(float speed);
+	float getVelocityY();
 
 	float x();
 	float y();
@@ -34,7 +34,7 @@ private:
 	sf::RenderWindow* window;
 	Paddle* paddle;
 
-	float xSpeed, ySpeed;
+	float speed;
 	sf::Vector2f velocity;
 	float radius;
 

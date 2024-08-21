@@ -39,6 +39,8 @@ void Level::update()
 		{
 			this->resetDarkerColor();
 
+			this->testCollision();
+
 			this->paddle->update();
 			this->ball->update();
 
@@ -77,6 +79,67 @@ void Level::render()
 			this->window->draw(*this->levelNumberText);
 		}
 	}
+}
+
+void Level::testCollision()
+{
+	this->testWallsCollision();
+	this->testPaddleCollision();
+	this->testBrickCollision();
+}
+
+void Level::testWallsCollision()
+{
+	if (this->ball->left() <= 312)
+	{
+		this->ball->setVelocityX(this->ball->getSpeed());
+	}
+
+	if (this->ball->top() <= 139)
+	{
+		this->ball->setVelocityY(this->ball->getSpeed());
+	}
+
+	if (this->ball->right() >= 1113)
+	{
+		this->ball->setVelocityX(-(this->ball->getSpeed()));
+	}
+}
+
+void Level::testPaddleCollision()
+{
+	if (this->isIntersecting(this->ball->sprite, this->paddle->sprite))
+	{
+		this->ball->setVelocityY(-(rand() % 6 + 7));
+
+		if (this->ball->x() < this->paddle->x())
+		{
+			this->ball->setVelocityX(-(this->ball->getSpeed()));
+		}
+		else
+		{
+			this->ball->setVelocityX(this->ball->getSpeed());
+		}
+	}
+}
+
+void Level::testBrickCollision()
+{
+	for (int i = 0; i < this->rowBricks; i++)
+	{
+		for (int j = 0; j < this->columnBricks; j++)
+		{
+			if (this->isIntersecting(this->ball->sprite, (*this->bricks)[i][j].sprite))
+			{
+				this->bricks->erase() // TODO: erase the right brick from rhe vector
+			}
+		}
+	}
+}
+
+bool Level::isIntersecting(sf::Sprite first, sf::Sprite second)
+{
+	return first.getGlobalBounds().intersects(second.getGlobalBounds());
 }
 
 void Level::init()

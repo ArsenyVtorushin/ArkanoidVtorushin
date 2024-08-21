@@ -2,6 +2,7 @@
 #define INCLUDES_HPP
 
 #include <iostream>
+#include <cstdlib>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>

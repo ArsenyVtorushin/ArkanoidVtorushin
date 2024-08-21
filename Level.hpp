@@ -17,10 +17,14 @@ public:
 
 	void update();
 	void render();
-	
-	void init();
-	void initTextures();
-	void initSprites();
+
+	void testCollision();
+
+	void testWallsCollision();
+	void testPaddleCollision();
+	void testBrickCollision();
+
+	bool isIntersecting(sf::Sprite first, sf::Sprite second);
 
 	void setDarkerColor();
 	void resetDarkerColor();
@@ -55,9 +59,13 @@ private:
 	sf::Text* levelNumberText;
 
 	unsigned int levelNumberText_cooldown;
+
+	//Initialization
+
+	void init();
+	void initTextures();
+	void initSprites();
 };
 
 #endif // !LEVEL_HPP
-
-
 
