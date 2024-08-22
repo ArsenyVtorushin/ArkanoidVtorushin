@@ -6,7 +6,7 @@
 #define Y_HEARTS_POS 500
 
 #define X_BRICKS_POS (this->walls->left() + 20) + (((*this->bricks)[i][j].sprite.getGlobalBounds().width + 13) * j)
-#define Y_BRICKS_POS (this->walls->top() + 20) + (((*this->bricks)[i][j].sprite.getGlobalBounds().height + 13) * i) 
+#define Y_BRICKS_POS (this->walls->top() + 40) + (((*this->bricks)[i][j].sprite.getGlobalBounds().height + 13) * i) 
 
 class Level
 {
@@ -36,6 +36,10 @@ private:
 	int rowBricks, columnBricks;
 	int allBricks;
 
+	float overlapLeft, overlapRight, overlapTop, overlapBottom;
+	float minOverlapX, minOverlapY;
+
+	bool ballFromLeft, ballFromTop;
 	bool* startGameBool, startLevelBool;
 	bool win;
 

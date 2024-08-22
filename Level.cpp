@@ -14,7 +14,6 @@ Level::Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* st
 
 	this->init();
 }
-
 Level::~Level()
 {
 	delete this->paddle;
@@ -51,7 +50,6 @@ void Level::update()
 		}
 	}
 }
-
 void Level::render()
 {
 	if (*this->startGameBool)
@@ -66,9 +64,9 @@ void Level::render()
 			this->window->draw((*this->hearts)[i].sprite);
 		}
 
-		for (int i = 0; i < this->rowBricks; i++)
+		for (int i = 0; i < (*this->bricks).size(); i++)
 		{
-			for (int j = 0; j < this->columnBricks; j++)
+			for (int j = 0; j < (*this->bricks)[i].size(); j++)
 			{
 				this->window->draw((*this->bricks)[i][j].sprite);
 			}
@@ -105,12 +103,11 @@ void Level::testWallsCollision()
 		this->ball->setVelocityX(-(this->ball->getSpeed()));
 	}
 }
-
 void Level::testPaddleCollision()
 {
 	if (this->isIntersecting(this->ball->sprite, this->paddle->sprite))
 	{
-		this->ball->setVelocityY(-(rand() % 6 + 7));
+		this->ball->setVelocityY(-(rand() % 8 + 8));
 
 		if (this->ball->x() < this->paddle->x())
 		{
@@ -122,16 +119,35 @@ void Level::testPaddleCollision()
 		}
 	}
 }
-
 void Level::testBrickCollision()
 {
-	for (int i = 0; i < this->rowBricks; i++)
+	for (int i = 0; i < (*this->bricks).size(); i++)
 	{
-		for (int j = 0; j < this->columnBricks; j++)
+		for (int j = 0; j < (*this->bricks)[i].size(); j++)
 		{
 			if (this->isIntersecting(this->ball->sprite, (*this->bricks)[i][j].sprite))
 			{
-				this->bricks->erase() // TODO: erase the right brick from rhe vector
+				this->overlapLeft = (*this->ball).right() - (*this->bricks)[i][j].left();
+				this->overlapRight = (*this->bricks)[i][j].right() - (*this->ball).left();
+				this->overlapTop = (*this->ball).bottom() - (*this->bricks)[i][j].top();
+				this->overlapBottom = (*this->bricks)[i][j].bottom() - (*this->ball).top();
+
+				this->ballFromLeft = this->overlapLeft < this->overlapRight;
+				this->ballFromTop = this->overlapTop < this->overlapBottom;
+
+				this->minOverlapX = { this->ballFromLeft ? overlapLeft : overlapRight };
+				this->minOverlapY = { this->ballFromTop ? overlapTop : overlapBottom };
+
+				if (this->minOverlapX < this->minOverlapY)
+				{
+					this->ball->setVelocityX(this->ballFromLeft ? -(this->ball->getSpeed()) : this->ball->getSpeed());
+				}
+				else
+				{
+					this->ball->setVelocityY(this->ballFromTop ? -(this->ball->getSpeed()) : this->ball->getSpeed());
+				}
+
+				(*this->bricks)[i].erase((*this->bricks)[i].begin() + j);
 			}
 		}
 	}
@@ -171,9 +187,9 @@ void Level::initSprites()
 		(*this->hearts)[i].sprite.setPosition(X_HEARTS_POS, Y_HEARTS_POS);
 	}
 
-	for (int i = 0; i < this->rowBricks; i++)
+	for (int i = 0; i < (*this->bricks).size(); i++)
 	{
-		for (int j = 0; j < this->columnBricks; j++)
+		for (int j = 0; j < (*this->bricks)[i].size(); j++)
 		{
 			(*this->bricks)[i][j].sprite.setPosition(X_BRICKS_POS, Y_BRICKS_POS);
 		}
@@ -192,9 +208,9 @@ void Level::setDarkerColor()
 		(*this->hearts)[i].sprite.setColor(sf::Color(255, 255, 255, 128));
 	}
 
-	for (int i = 0; i < this->rowBricks; i++)
+	for (int i = 0; i < (*this->bricks).size(); i++)
 	{
-		for (int j = 0; j < this->columnBricks; j++)
+		for (int j = 0; j < (*this->bricks)[i].size(); j++)
 		{
 			(*this->bricks)[i][j].sprite.setColor(sf::Color(255, 255, 255, 128));
 		}
@@ -212,9 +228,9 @@ void Level::resetDarkerColor()
 		(*this->hearts)[i].sprite.setColor(sf::Color(255, 255, 255, 255));
 	}
 
-	for (int i = 0; i < this->rowBricks; i++)
+	for (int i = 0; i < (*this->bricks).size(); i++)
 	{
-		for (int j = 0; j < this->columnBricks; j++)
+		for (int j = 0; j < (*this->bricks)[i].size(); j++)
 		{
 			(*this->bricks)[i][j].sprite.setColor(sf::Color(255, 255, 255, 255));
 		}
