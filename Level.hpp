@@ -29,6 +29,9 @@ public:
 	void setDarkerColor();
 	void resetDarkerColor();
 
+	void setStartLevelBool(bool startLevelBool);
+	bool getStartLevelBool();
+
 	bool getWin();
 
 private:
@@ -40,7 +43,8 @@ private:
 	float minOverlapX, minOverlapY;
 
 	bool ballFromLeft, ballFromTop;
-	bool* startGameBool, startLevelBool;
+	bool* startGameBool;
+	bool startLevelBool;
 	bool win;
 
 	sf::RenderWindow* window;

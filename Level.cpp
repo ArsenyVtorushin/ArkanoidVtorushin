@@ -28,24 +28,28 @@ void Level::update()
 {
 	if (*this->startGameBool)
 	{
-		if (this->levelNumberText_cooldown > 0)
+		if (this->startLevelBool)
 		{
-			this->levelNumberText_cooldown--;
-			
-			this->setDarkerColor();
-		}
-		else
-		{
-			this->resetDarkerColor();
-
-			this->testCollision();
-
-			this->paddle->update();
-			this->ball->update();
-
-			if (this->bricks->empty())
+			if (this->levelNumberText_cooldown > 0)
 			{
-				this->win = true;
+				this->levelNumberText_cooldown--;
+
+				this->setDarkerColor();
+			}
+			else
+			{
+				if (this->bricks->empty())
+				{
+					this->win = true;
+					this->startLevelBool = false;
+				}
+
+				this->resetDarkerColor();
+
+				this->testCollision();
+
+				this->paddle->update();
+				this->ball->update();
 			}
 		}
 	}
@@ -54,27 +58,30 @@ void Level::render()
 {
 	if (*this->startGameBool)
 	{
-		this->window->draw(this->paddle->sprite);
-		this->window->draw(this->ball->sprite);
-		this->window->draw(this->walls->sprite);
-		this->window->draw(this->logo->sprite);
-
-		for (int i = 0; i < this->hearts->size(); i++)
+		if (this->startLevelBool)
 		{
-			this->window->draw((*this->hearts)[i].sprite);
-		}
+			this->window->draw(this->paddle->sprite);
+			this->window->draw(this->ball->sprite);
+			this->window->draw(this->walls->sprite);
+			this->window->draw(this->logo->sprite);
 
-		for (int i = 0; i < (*this->bricks).size(); i++)
-		{
-			for (int j = 0; j < (*this->bricks)[i].size(); j++)
+			for (int i = 0; i < this->hearts->size(); i++)
 			{
-				this->window->draw((*this->bricks)[i][j].sprite);
+				this->window->draw((*this->hearts)[i].sprite);
 			}
-		}
 
-		if (this->levelNumberText_cooldown > 0)
-		{
-			this->window->draw(*this->levelNumberText);
+			for (int i = 0; i < (*this->bricks).size(); i++)
+			{
+				for (int j = 0; j < (*this->bricks)[i].size(); j++)
+				{
+					this->window->draw((*this->bricks)[i][j].sprite);
+				}
+			}
+
+			if (this->levelNumberText_cooldown > 0)
+			{
+				this->window->draw(*this->levelNumberText);
+			}
 		}
 	}
 }
@@ -148,6 +155,11 @@ void Level::testBrickCollision()
 				}
 
 				(*this->bricks)[i].erase((*this->bricks)[i].begin() + j);
+
+				if ((*this->bricks)[i].empty())
+				{
+					this->bricks->erase(this->bricks->begin() + i);
+				}
 			}
 		}
 	}
@@ -235,6 +247,15 @@ void Level::resetDarkerColor()
 			(*this->bricks)[i][j].sprite.setColor(sf::Color(255, 255, 255, 255));
 		}
 	}
+}
+
+void Level::setStartLevelBool(bool startLevelBool)
+{
+	this->startLevelBool = startLevelBool;
+}
+bool Level::getStartLevelBool()
+{
+	return this->startLevelBool;
 }
 
 bool Level::getWin()

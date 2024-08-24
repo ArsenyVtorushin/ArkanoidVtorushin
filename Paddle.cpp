@@ -9,6 +9,7 @@ Paddle::Paddle(sf::Texture* texture, sf::RenderWindow* window)
 	this->sprite.setTexture(*texture);
 	this->sprite.setOrigin(this->sprite.getTexture()->getSize().x * 0.5, this->sprite.getTexture()->getSize().y * 0.5);
 	this->sprite.setPosition(1000.f, (*this->window).getSize().y - 80.f);
+	this->sprite.setScale(8.f, 10.f);
 }
 
 void Paddle::update()

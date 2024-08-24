@@ -12,7 +12,7 @@ Ball::Ball(sf::Texture* texture, sf::RenderWindow* window, Paddle* paddle, unsig
 
 	this->sprite.setPosition((*this->paddle).x(), (*this->paddle).top() - this->radius - 5);
 	this->radius = this->sprite.getTexture()->getSize().x * 0.5f;
-	this->speed = 10.f;
+	this->speed = 20.f;
 	this->velocity = { -(this->speed), -(this->speed) };
 
 	this->levelNumberText_cooldown = levelNumberText_cooldown;

@@ -18,6 +18,8 @@ Game::~Game()
 	//delete this->gameOverMenu;
 	delete this->howToPlay;
 	delete this->levelOne;
+	delete this->levelTwo;
+	delete this->finalRound;
 }
 
 // Functions
@@ -41,6 +43,7 @@ void Game::update()
 		}
 
 		this->mainMenu->update();
+
 		this->howToPlay->update();
 
 	 	if (this->exitBool)
@@ -50,6 +53,25 @@ void Game::update()
 	}
 
 	this->levelOne->update();
+
+	if (this->levelOne->getWin())
+	{
+		this->levelTwo->setStartLevelBool(true);
+	}
+
+	this->levelTwo->update();
+
+	if (this->levelTwo->getWin())
+	{
+		this->finalRound->setStartLevelBool(true);
+	}
+
+	this->finalRound->update();
+
+	if (this->finalRound->getWin())
+	{
+		// CONGRATS
+	}
 }
 
 void Game::render()
@@ -59,6 +81,8 @@ void Game::render()
 	this->mainMenu->render();
 	this->howToPlay->render();
 	this->levelOne->render();
+	this->levelTwo->render();
+	this->finalRound->render();
 
 	this->window->display();
 }
@@ -117,6 +141,9 @@ void Game::initInstructions()
 void Game::initLevels()
 {
 	this->levelOne = new Level(this->window, 5, 10, &this->startGameBool, &this->levelOneText);
+	this->levelOne->setStartLevelBool(true);
+	this->levelTwo = new Level(this->window, 10, 5, &this->startGameBool, &this->levelTwoText);
+	this->finalRound = new Level(this->window, 3, 8, &this->startGameBool, &this->finalRoundText);
 }
 void Game::initBooleans()
 {

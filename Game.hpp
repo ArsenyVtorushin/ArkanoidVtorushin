@@ -28,6 +28,8 @@ private:
 	//GameOverMenu* gameOverMenu;
 	HowToPlay* howToPlay;
 	Level* levelOne;
+	Level* levelTwo;
+	Level* finalRound;
 
 	bool mainMenuBool;
 	bool startGameBool, howToPlayBool, exitBool;
