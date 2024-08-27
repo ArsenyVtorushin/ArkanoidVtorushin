@@ -9,7 +9,7 @@ Paddle::Paddle(sf::Texture* texture, sf::RenderWindow* window)
 	this->sprite.setTexture(*texture);
 	this->sprite.setOrigin(this->sprite.getTexture()->getSize().x * 0.5, this->sprite.getTexture()->getSize().y * 0.5);
 	this->sprite.setPosition(1000.f, (*this->window).getSize().y - 80.f);
-	this->sprite.setScale(8.f, 10.f);
+	this->sprite.setScale(3.f, 7.f);
 }
 
 void Paddle::update()
@@ -31,10 +31,13 @@ int Paddle::getHPMax()
 {
 	return this->HPMax;
 }
-
 int Paddle::getHP()
 {
 	return this->HP;
+}
+void Paddle::decreaseHP()
+{
+	this->HP--;
 }
 
 float Paddle::x()

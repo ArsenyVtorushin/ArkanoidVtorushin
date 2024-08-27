@@ -12,17 +12,19 @@ class Level
 {
 public:
 
-	Level(sf::RenderWindow* window, int amountBricksX, int amountBricksY, bool* startGameBool, sf::Text* levelNumberText);
+	Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* startGameBool, bool* gameOverMenuBool, sf::Text* levelNumberText);
 	~Level();
 
 	void update();
 	void render();
 
-	void testCollision();
+	void checkCollision();
 
-	void testWallsCollision();
-	void testPaddleCollision();
-	void testBrickCollision();
+	void checkWallsCollision();
+	void checkPaddleCollision();
+	void checkBrickCollision();
+
+	void checkBallOut();
 
 	bool isIntersecting(sf::Sprite first, sf::Sprite second);
 
@@ -32,6 +34,7 @@ public:
 	void setStartLevelBool(bool startLevelBool);
 	bool getStartLevelBool();
 
+	void setWin(bool win);
 	bool getWin();
 
 private:
@@ -43,8 +46,8 @@ private:
 	float minOverlapX, minOverlapY;
 
 	bool ballFromLeft, ballFromTop;
-	bool* startGameBool;
-	bool startLevelBool;
+	bool* startGameBool, startLevelBool;
+	bool* gameOverMenuBool;
 	bool win;
 
 	sf::RenderWindow* window;
@@ -73,6 +76,9 @@ private:
 	void init();
 	void initTextures();
 	void initSprites();
+
+	void initHearts();
+	void initBricks();
 };
 
 #endif // !LEVEL_HPP

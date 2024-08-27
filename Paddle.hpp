@@ -12,6 +12,7 @@ public:
 
 	int getHPMax();
 	int getHP();
+	void decreaseHP();
 
 	float x();
 	float y();
@@ -26,7 +27,7 @@ public:
 private:
 	sf::RenderWindow* window;
 
-	int HP;
+	unsigned int HP;
 	int HPMax;
 };
 

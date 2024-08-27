@@ -7,13 +7,16 @@ class MainMenu
 {
 public:
 
-	MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent, bool* mainMenuBool, bool* startGameBool, bool* howToPlayBool, bool* exitBool);
+	MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent, bool* mainMenuBool, bool* startGameBool, bool* howToPlayBool, bool* exitMainMenuBool);
 
 	void update();
 	void render();
 	void MoveUp();
 	void MoveDown();
 
+	void setStartLevelOneFlag(bool startLevelOneFlag);
+	bool getStartLevelOneFlag();
+	
 	int getSelectedItemIndex();
 
 private:
@@ -26,7 +29,8 @@ private:
 	sf::Event* sfEvent;
 
 	bool* mainMenuBool;
-	bool* startGameBool, *howToPlayBool, *exitBool;
+	bool* startGameBool, * howToPlayBool, * exitMainMenuBool;
+	bool startLevelOneFlag;
 };
 
 #endif // !MAINMENU_HPP

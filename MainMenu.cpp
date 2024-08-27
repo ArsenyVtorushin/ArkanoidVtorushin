@@ -1,6 +1,6 @@
 #include "MainMenu.hpp"
 
-MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent, bool* mainMenuBool, bool* startGameBool, bool* howToPlayBool, bool* exitBool)
+MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent, bool* mainMenuBool, bool* startGameBool, bool* howToPlayBool, bool* exitMainMenuBool)
 {	
 	this->font = font;
 	this->window = window;
@@ -9,7 +9,7 @@ MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent,
 	this->mainMenuBool = mainMenuBool;
 	this->startGameBool = startGameBool;
 	this->howToPlayBool = howToPlayBool;
-	this->exitBool = exitBool;
+	this->exitMainMenuBool = exitMainMenuBool;
 	
 	this->menu[0].setString("Start");
 	this->menu[0].setOutlineColor(sf::Color::Blue);
@@ -32,7 +32,7 @@ MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent,
 
 void MainMenu::update()
 {
-	if (this->mainMenuBool)
+	if (*this->mainMenuBool)
 	{
 		if ((*this->sfEvent).type == sf::Event::KeyReleased)
 		{
@@ -49,23 +49,24 @@ void MainMenu::update()
 				if (this->getSelectedItemIndex() == 0)
 				{
 					*this->mainMenuBool = false;
-					*this->startGameBool = true; 
+					*this->startGameBool = true;
+					this->startLevelOneFlag = true;
 					*this->howToPlayBool = false;
-					*this->exitBool = false;
+					*this->exitMainMenuBool = false;
 				}
 				else if (this->getSelectedItemIndex() == 1)
 				{
 					*this->mainMenuBool = false;
 					*this->startGameBool = false;
 					*this->howToPlayBool = true;
-					*this->exitBool = false;
+					*this->exitMainMenuBool = false;
 				}
 				else
 				{
 					*this->mainMenuBool = false;
 					*this->startGameBool = false;
 					*this->howToPlayBool = false;
-					*this->exitBool = true;
+					*this->exitMainMenuBool = true;
 				}
 			}
 		}
@@ -99,6 +100,15 @@ void MainMenu::MoveDown()
 		this->selectedItemIndex++;
 		this->menu[selectedItemIndex].setOutlineColor(sf::Color::Blue);
 	}
+}
+
+void MainMenu::setStartLevelOneFlag(bool startLevelOneFlag)
+{
+	this->startLevelOneFlag = startLevelOneFlag;
+}
+bool MainMenu::getStartLevelOneFlag()
+{
+	return this->startLevelOneFlag;
 }
 
 int MainMenu::getSelectedItemIndex()

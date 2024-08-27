@@ -1,5 +1,5 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef GAME_HPP
+#define GAME_HPP
 #include "MainMenu.hpp"
 
 class Game
@@ -12,7 +12,13 @@ public:
 	void run();
 	void update();
 	void render();
-	
+
+	void updateMainMenu();
+	void updateGameOverMenu();
+
+	void Leveling();
+	void TryAgain();
+
 private:
 
 	//Variables
@@ -25,25 +31,27 @@ private:
 
 	MainMenu* mainMenu;
 	//PauseMenu* pauseMenu;
-	//GameOverMenu* gameOverMenu;
+	GameOverMenu* gameOverMenu;
 	HowToPlay* howToPlay;
 	Level* levelOne;
 	Level* levelTwo;
 	Level* finalRound;
 
 	bool mainMenuBool;
-	bool startGameBool, howToPlayBool, exitBool;
+	bool startGameBool, howToPlayBool, exitMainMenuBool;
+	bool gameOverMenuBool;
+	bool tryAgainBool, exitGameOverMenuBool;
 
 	//Initialization
 
 	void init();
 
+	void initBooleans();
 	void initWindow();
 	void initText();
 	void initMenus();
 	void initInstructions();
 	void initLevels();
-	void initBooleans();
 
 };
 
