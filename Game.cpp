@@ -14,7 +14,7 @@ Game::~Game()
 	delete this->window;
 	delete this->font;
 	delete this->mainMenu;
-	//delete this->pauseMenu;
+	delete this->pauseMenu;
 	delete this->gameOverMenu;
 	delete this->howToPlay;
 	delete this->levelOne;
@@ -43,18 +43,19 @@ void Game::update()
 		}
 
 		this->updateMainMenu();
+		this->updatePauseMenu();
 		this->updateGameOverMenu();
 	}
 
 	this->Leveling();
 }
-
 void Game::render()
 {
 	this->window->clear();
 
 	this->mainMenu->render();
 	this->howToPlay->render();
+	this->pauseMenu->render();
 	this->gameOverMenu->render();
 	this->levelOne->render();
 	this->levelTwo->render();
@@ -70,8 +71,6 @@ void Game::updateMainMenu()
 	if (this->mainMenu->getStartLevelOneFlag())
 	{
 		(*this->levelOne).setStartLevelBool(true);
-		(*this->levelTwo).setStartLevelBool(false);
-		(*this->finalRound).setStartLevelBool(false);
 		(*this->mainMenu).setStartLevelOneFlag(false);
 	}
 
@@ -81,58 +80,95 @@ void Game::updateMainMenu()
 		(*this->window).close();
 	}
 }
+void Game::updatePauseMenu()
+{
+	if (this->startGameBool)
+	{
+		if (this->sfEvent.type == sf::Event::KeyReleased && this->sfEvent.key.code == sf::Keyboard::Space)
+		{
+			this->startGameBool = false;
+			this->pauseMenu->setPauseMenuBool(true);
+		}
+
+		this->pauseMenu->update();
+
+		if (this->pauseMenu->getContinueBool())
+		{
+			this->startGameBool = true;
+			this->pauseMenu->setContinueBool(false);
+		}
+
+		if (this->pauseMenu->getExitBool())
+		{
+			delete this->levelOne;
+			delete this->levelTwo;
+			delete this->finalRound;
+
+			this->initLevels();
+
+			this->mainMenuBool = true;
+			this->pauseMenu->setExitBool(false);
+		}
+	}
+}
 void Game::updateGameOverMenu()
 {
 	this->gameOverMenu->update();
-	this->TryAgain();
+
+	if (this->tryAgainBool)
+	{
+		delete this->levelOne;
+		delete this->levelTwo;
+		delete this->finalRound;
+
+		this->initLevels();
+
+		this->startGameBool = true;
+		this->levelOne->setStartLevelBool(true);
+
+		this->tryAgainBool = false;
+	}
+
 	if (this->exitGameOverMenuBool)
 	{
-		this->gameOverMenuBool = false;
+		delete this->levelOne;
+		delete this->levelTwo;
+		delete this->finalRound;
+
+		this->initLevels();
+
 		this->exitGameOverMenuBool = false;
-
-		this->levelOne->setWin(false);
-		this->levelTwo->setWin(false);
-		this->finalRound->setWin(false);
-
 		this->mainMenuBool = true;
 	}
 }
 
 void Game::Leveling()
 {
-	this->levelOne->update();
-
-	if (this->levelOne->getWin())
+	if (this->startGameBool)
 	{
-		this->levelTwo->setStartLevelBool(true);
-	}
+		this->levelOne->update();
 
-	this->levelTwo->update();
+		if (this->levelOne->getWin())
+		{
+			this->levelOne->setWin(false);
+			this->levelTwo->setStartLevelBool(true);
+		}
 
-	if (this->levelTwo->getWin())
-	{
-		this->finalRound->setStartLevelBool(true);
-	}
+		this->levelTwo->update();
 
-	this->finalRound->update();
+		if (this->levelTwo->getWin())
+		{
+			this->levelTwo->setWin(false);
+			this->finalRound->setStartLevelBool(true);
+		}
 
-	if (this->finalRound->getWin())
-	{
-		// CONGRATS
-	}
-}
-void Game::TryAgain()
-{
-	if (this->tryAgainBool)
-	{
-		this->gameOverMenuBool = false;
-		this->startGameBool = true;
-		this->levelOne->setWin(false);
-		this->levelTwo->setWin(false);
-		this->finalRound->setWin(false);
-		this->levelOne->setStartLevelBool(true);
-		this->levelTwo->setStartLevelBool(false);
-		this->finalRound->setStartLevelBool(false);
+		this->finalRound->update();
+
+		if (this->finalRound->getWin())
+		{
+			this->finalRound->setWin(false);
+			// CONGRATS
+		}
 	}
 }
 
@@ -170,7 +206,7 @@ void Game::initText()
 {
 	this->font = new sf::Font;
 	this->font->loadFromFile("Assets/font.ttf");
-	
+
 	this->levelOneText.setFont(*this->font);
 	this->levelOneText.setString("Level 1");
 	this->levelOneText.setScale(3.f, 3.f);
@@ -191,8 +227,8 @@ void Game::initText()
 }
 void Game::initMenus()
 {
-	this->mainMenu = new MainMenu(this->font, this->window, &this->sfEvent, &this->mainMenuBool, &this->startGameBool, &this->howToPlayBool, &this->exitMainMenuBool); 
-	//this->pauseMenu = new PauseMenu();
+	this->mainMenu = new MainMenu(this->font, this->window, &this->sfEvent, &this->mainMenuBool, &this->startGameBool, &this->howToPlayBool, &this->exitMainMenuBool);
+	this->pauseMenu = new PauseMenu(this->font, this->window, &this->sfEvent);
 	this->gameOverMenu = new GameOverMenu(this->font, this->window, &this->sfEvent, &this->gameOverMenuBool, &this->tryAgainBool, &this->exitGameOverMenuBool);
 }
 void Game::initInstructions()

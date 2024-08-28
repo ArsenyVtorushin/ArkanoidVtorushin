@@ -1,7 +1,7 @@
 #ifndef GAMEOVERMENU_HPP
 #define GAMEOVERMENU_HPP
 #include "Level.hpp"
-#define MAX_NUMBER_OF_ITEMS 2
+#define MAX_NUMBER_OF_ITEMS_GAMEOVER 2
 
 class GameOverMenu
 {
@@ -22,7 +22,7 @@ private:
 
 	sf::Font* font;
 	sf::Text gameOverText;
-	sf::Text menu[MAX_NUMBER_OF_ITEMS];
+	sf::Text menu[MAX_NUMBER_OF_ITEMS_GAMEOVER];
 	sf::RenderWindow* window;
 	sf::Event* sfEvent;
 

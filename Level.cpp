@@ -27,24 +27,23 @@ Level::~Level()
 
 void Level::update()
 {
-	if (*this->startGameBool)
+	if (this->startLevelBool)
 	{
-		if (this->startLevelBool)
+		if (this->levelNumberText_cooldown > 0)
 		{
-			if (this->levelNumberText_cooldown > 0)
-			{
-				this->levelNumberText_cooldown--;
+			this->levelNumberText_cooldown--;
 
-				this->setDarkerColor();
+			this->setDarkerColor();
+		}
+		else
+		{
+			if (this->bricks->empty())
+			{
+				this->win = true;
+				this->startLevelBool = false;
 			}
 			else
 			{
-				if (this->bricks->empty())
-				{
-					this->win = true;
-					this->startLevelBool = false;
-				}
-
 				this->resetDarkerColor();
 
 				this->checkCollision();
@@ -191,7 +190,7 @@ void Level::checkBallOut()
 		this->initBricks();
 
 		this->levelNumberText_cooldown = 120;
-		this->ball->setVelocityY(this->ball->getSpeed());
+		this->ball->setVelocityY(-(this->ball->getSpeed()));
 	}
 }
 

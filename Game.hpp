@@ -14,10 +14,10 @@ public:
 	void render();
 
 	void updateMainMenu();
+	void updatePauseMenu();
 	void updateGameOverMenu();
 
 	void Leveling();
-	void TryAgain();
 
 private:
 
@@ -30,7 +30,7 @@ private:
 	sf::Text levelOneText, levelTwoText, finalRoundText;
 
 	MainMenu* mainMenu;
-	//PauseMenu* pauseMenu;
+	PauseMenu* pauseMenu;
 	GameOverMenu* gameOverMenu;
 	HowToPlay* howToPlay;
 	Level* levelOne;
@@ -39,6 +39,7 @@ private:
 
 	bool mainMenuBool;
 	bool startGameBool, howToPlayBool, exitMainMenuBool;
+
 	bool gameOverMenuBool;
 	bool tryAgainBool, exitGameOverMenuBool;
 

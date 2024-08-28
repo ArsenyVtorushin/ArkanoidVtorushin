@@ -21,13 +21,13 @@ GameOverMenu::GameOverMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* 
 	this->menu[1].setString("Exit");
 	this->menu[1].setOutlineColor(sf::Color::Black);
 
-	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
+	for (int i = 0; i < MAX_NUMBER_OF_ITEMS_GAMEOVER; i++)
 	{
 		this->menu[i].setOutlineThickness(1.f);
 		this->menu[i].setScale(1.5f, 1.5f);
 		this->menu[i].setFont(*this->font);
 		this->menu[i].setOrigin(this->menu[i].getLocalBounds().width * 0.5f, this->menu[i].getLocalBounds().height * 0.5f);
-		this->menu[i].setPosition((*this->window).getSize().x * 0.5f, (*this->window).getSize().y * 0.5f + (*this->window).getSize().y * 0.5f / (MAX_NUMBER_OF_ITEMS + 1) * (i + 1.f));
+		this->menu[i].setPosition((*this->window).getSize().x * 0.5f, (*this->window).getSize().y * 0.5f + (*this->window).getSize().y * 0.5f / (MAX_NUMBER_OF_ITEMS_GAMEOVER + 1) * (i + 1.f));
 	}
 
 	this->selectedItemIndex = 0;
@@ -71,7 +71,7 @@ void GameOverMenu::render()
 	if (*this->gameOverMenuBool)
 	{
 		(*this->window).draw(this->gameOverText);
-		for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
+		for (int i = 0; i < MAX_NUMBER_OF_ITEMS_GAMEOVER; i++)
 		{
 			(*this->window).draw(this->menu[i]);
 		}
@@ -89,7 +89,7 @@ void GameOverMenu::MoveUp()
 }
 void GameOverMenu::MoveDown()
 {
-	if (this->selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS)
+	if (this->selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS_GAMEOVER)
 	{
 		this->menu[selectedItemIndex].setOutlineColor(sf::Color::Black);
 		this->selectedItemIndex++;

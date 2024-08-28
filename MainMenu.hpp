@@ -1,7 +1,7 @@
 #ifndef MAINMENU_HPP
 #define MAINMENU_HPP
 #include "HowToPlay.hpp"
-#define MAX_NUMBER_OF_ITEMS 3
+#define MAX_NUMBER_OF_ITEMS_MAIN 3
 
 class MainMenu
 {
@@ -11,6 +11,7 @@ public:
 
 	void update();
 	void render();
+
 	void MoveUp();
 	void MoveDown();
 
@@ -24,7 +25,7 @@ private:
 	int selectedItemIndex;
 	
 	sf::Font* font;
-	sf::Text menu[MAX_NUMBER_OF_ITEMS];
+	sf::Text menu[MAX_NUMBER_OF_ITEMS_MAIN];
 	sf::RenderWindow* window;
 	sf::Event* sfEvent;
 
