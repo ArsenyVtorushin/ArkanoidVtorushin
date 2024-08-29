@@ -16,6 +16,7 @@ Game::~Game()
 	delete this->mainMenu;
 	delete this->pauseMenu;
 	delete this->gameOverMenu;
+	delete this->winMenu;
 	delete this->howToPlay;
 	delete this->levelOne;
 	delete this->levelTwo;
@@ -45,6 +46,7 @@ void Game::update()
 		this->updateMainMenu();
 		this->updatePauseMenu();
 		this->updateGameOverMenu();
+		this->updateWinMenu();
 	}
 
 	this->Leveling();
@@ -54,9 +56,10 @@ void Game::render()
 	this->window->clear();
 
 	this->mainMenu->render();
-	this->howToPlay->render();
 	this->pauseMenu->render();
 	this->gameOverMenu->render();
+	this->winMenu->render();
+	this->howToPlay->render();
 	this->levelOne->render();
 	this->levelTwo->render();
 	this->finalRound->render();
@@ -89,27 +92,28 @@ void Game::updatePauseMenu()
 			this->startGameBool = false;
 			this->pauseMenu->setPauseMenuBool(true);
 		}
-
-		this->pauseMenu->update();
-
-		if (this->pauseMenu->getContinueBool())
-		{
-			this->startGameBool = true;
-			this->pauseMenu->setContinueBool(false);
-		}
-
-		if (this->pauseMenu->getExitBool())
-		{
-			delete this->levelOne;
-			delete this->levelTwo;
-			delete this->finalRound;
-
-			this->initLevels();
-
-			this->mainMenuBool = true;
-			this->pauseMenu->setExitBool(false);
-		}
 	}
+
+	this->pauseMenu->update();
+
+	if (this->pauseMenu->getContinueBool())
+	{
+		this->startGameBool = true;
+		this->pauseMenu->setContinueBool(false);
+	}
+
+	if (this->pauseMenu->getExitBool())
+	{
+		delete this->levelOne;
+		delete this->levelTwo;
+		delete this->finalRound;
+
+		this->initLevels();
+
+		this->mainMenuBool = true;
+		this->pauseMenu->setExitBool(false);
+	}
+	
 }
 void Game::updateGameOverMenu()
 {
@@ -141,6 +145,27 @@ void Game::updateGameOverMenu()
 		this->mainMenuBool = true;
 	}
 }
+void Game::updateWinMenu()
+{
+	this->winMenu->update();
+
+	if (this->winMenu->getPlayAgainBool())
+	{
+		delete this->levelOne;
+		delete this->levelTwo;
+		delete this->finalRound;
+
+		this->initLevels();
+
+		this->mainMenuBool = true;
+		this->winMenu->setPlayAgainBool(false);
+	}
+	
+	if (this->winMenu->getExitBool())
+	{
+		this->window->close();
+	}
+}
 
 void Game::Leveling()
 {
@@ -166,8 +191,9 @@ void Game::Leveling()
 
 		if (this->finalRound->getWin())
 		{
+			this->startGameBool = false;
+			this->winMenu->setWinMenuBool(true);
 			this->finalRound->setWin(false);
-			// CONGRATS
 		}
 	}
 }
@@ -230,6 +256,7 @@ void Game::initMenus()
 	this->mainMenu = new MainMenu(this->font, this->window, &this->sfEvent, &this->mainMenuBool, &this->startGameBool, &this->howToPlayBool, &this->exitMainMenuBool);
 	this->pauseMenu = new PauseMenu(this->font, this->window, &this->sfEvent);
 	this->gameOverMenu = new GameOverMenu(this->font, this->window, &this->sfEvent, &this->gameOverMenuBool, &this->tryAgainBool, &this->exitGameOverMenuBool);
+	this->winMenu = new WinMenu(this->font, this->window, &this->sfEvent);
 }
 void Game::initInstructions()
 {

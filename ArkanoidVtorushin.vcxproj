@@ -145,6 +145,7 @@
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="Walls.cpp" />
+    <ClCompile Include="WinMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.hpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Paddle.hpp" />
     <ClInclude Include="PauseMenu.hpp" />
     <ClInclude Include="Walls.hpp" />
+    <ClInclude Include="WinMenu.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

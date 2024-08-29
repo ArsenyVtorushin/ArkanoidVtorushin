@@ -16,6 +16,7 @@ public:
 	void updateMainMenu();
 	void updatePauseMenu();
 	void updateGameOverMenu();
+	void updateWinMenu();
 
 	void Leveling();
 
@@ -32,7 +33,10 @@ private:
 	MainMenu* mainMenu;
 	PauseMenu* pauseMenu;
 	GameOverMenu* gameOverMenu;
+	WinMenu* winMenu;
+
 	HowToPlay* howToPlay;
+
 	Level* levelOne;
 	Level* levelTwo;
 	Level* finalRound;

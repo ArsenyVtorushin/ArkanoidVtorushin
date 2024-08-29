@@ -32,6 +32,8 @@ MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent,
 	this->selectedItemIndex = 0;
 }
 
+//Functions
+
 void MainMenu::update()
 {
 	if (*this->mainMenuBool)

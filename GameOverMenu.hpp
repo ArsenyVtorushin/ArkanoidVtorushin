@@ -1,6 +1,6 @@
 #ifndef GAMEOVERMENU_HPP
 #define GAMEOVERMENU_HPP
-#include "Level.hpp"
+#include "WinMenu.hpp"
 #define MAX_NUMBER_OF_ITEMS_GAMEOVER 2
 
 class GameOverMenu
