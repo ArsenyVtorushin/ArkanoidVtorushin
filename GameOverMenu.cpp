@@ -18,7 +18,7 @@ GameOverMenu::GameOverMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* 
 
 	this->menu[0].setString("Try Again");
 	this->menu[0].setOutlineColor(sf::Color::Blue);
-	this->menu[1].setString("Exit");
+	this->menu[1].setString("Exit to Menu");
 	this->menu[1].setOutlineColor(sf::Color::Black);
 
 	for (int i = 0; i < MAX_NUMBER_OF_ITEMS_GAMEOVER; i++)

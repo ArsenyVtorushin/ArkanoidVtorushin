@@ -27,6 +27,7 @@ private:
 	sf::RenderWindow* window;
 	sf::Event sfEvent;
 	sf::Font* font;
+	sf::Music music;
 
 	sf::Text levelOneText, levelTwoText, finalRoundText;
 
@@ -54,6 +55,7 @@ private:
 	void initBooleans();
 	void initWindow();
 	void initText();
+	void initMusic();
 	void initMenus();
 	void initInstructions();
 	void initLevels();

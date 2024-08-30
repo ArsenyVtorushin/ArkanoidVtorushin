@@ -2,17 +2,17 @@
 #define LEVEL_HPP
 #include "Ball.hpp"
 
-#define X_HEARTS_POS this->window->getSize().x - 700 + (i + 1) * (*this->hearts)[i].sprite.getGlobalBounds().width
-#define Y_HEARTS_POS 500
+#define X_HEARTS_POS this->window->getSize().x - 730 + (i + 1) * (*this->hearts)[i].sprite.getGlobalBounds().width
+#define Y_HEARTS_POS 580
 
 #define X_BRICKS_POS (this->walls->left() + 20) + (((*this->bricks)[i][j].sprite.getGlobalBounds().width + 13) * j)
-#define Y_BRICKS_POS (this->walls->top() + 40) + (((*this->bricks)[i][j].sprite.getGlobalBounds().height + 13) * i) 
+#define Y_BRICKS_POS (this->walls->top() + 40) + (((*this->bricks)[i][j].sprite.getGlobalBounds().height + 13) * i)
 
 class Level
 {
 public:
 
-	Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* startGameBool, bool* gameOverMenuBool, sf::Text* levelNumberText);
+	Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* startGameBool, bool* gameOverMenuBool, sf::Text* levelNumberText, float ballSpeed);
 	~Level();
 
 	void update();
@@ -44,6 +44,8 @@ private:
 
 	float overlapLeft, overlapRight, overlapTop, overlapBottom;
 	float minOverlapX, minOverlapY;
+
+	float ballSpeed;
 
 	bool ballFromLeft, ballFromTop;
 	bool* startGameBool, startLevelBool;

@@ -12,22 +12,9 @@ MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent,
 	this->exitMainMenuBool = exitMainMenuBool;
 
 	this->startLevelOneFlag = false;
-	
-	this->menu[0].setString("Start");
-	this->menu[0].setOutlineColor(sf::Color::Blue);
-	this->menu[1].setString("How to Play");
-	this->menu[1].setOutlineColor(sf::Color::Black);
-	this->menu[2].setString("Exit");
-	this->menu[2].setOutlineColor(sf::Color::Black);
 
-	for (int i = 0; i < MAX_NUMBER_OF_ITEMS_MAIN; i++)
-	{
-		this->menu[i].setOutlineThickness(1.f);
-		this->menu[i].setScale(1.5f, 1.5f);
-		this->menu[i].setFont(*this->font);
-		this->menu[i].setOrigin(this->menu[i].getLocalBounds().width * 0.5f, this->menu[i].getLocalBounds().height * 0.5f);
-		this->menu[i].setPosition((*this->window).getSize().x * 0.5f, (*this->window).getSize().y * 0.5f + (*this->window).getSize().y * 0.5f / (MAX_NUMBER_OF_ITEMS_MAIN + 1) * (i + 1.f));
-	}
+	this->initLogo();
+	this->initText();
 
 	this->selectedItemIndex = 0;
 }
@@ -80,10 +67,14 @@ void MainMenu::render()
 {
 	if (*this->mainMenuBool)
 	{
+		this->window->draw(this->logo);
+
 		for (int i = 0; i < MAX_NUMBER_OF_ITEMS_MAIN; i++)
 		{
 			(*this->window).draw(this->menu[i]);
 		}
+
+		this->window->draw(this->upDownEnterText);
 	}
 }
 
@@ -118,4 +109,45 @@ bool MainMenu::getStartLevelOneFlag()
 int MainMenu::getSelectedItemIndex()
 {
 	return this->selectedItemIndex;
+}
+
+//Initialization
+
+void MainMenu::initLogo()
+{
+	if (!this->logoTexture.loadFromFile("Assets/ArkanoidLogo.png"))
+	{
+		std::cout << "Error when loading logo to menu\n";
+	}
+
+	this->logo.setTexture(this->logoTexture);
+	this->logo.setScale(6.f, 6.f);
+	this->logo.setOrigin(this->logo.getLocalBounds().width * 0.5, this->logo.getLocalBounds().height * 0.5);
+	this->logo.setPosition(this->window->getSize().x * 0.5f, this->window->getSize().y * 0.3f);
+}
+void MainMenu::initText()
+{
+	this->menu[0].setString("Start");
+	this->menu[0].setOutlineColor(sf::Color::Blue);
+	this->menu[1].setString("How to Play");
+	this->menu[1].setOutlineColor(sf::Color::Black);
+	this->menu[2].setString("Exit");
+	this->menu[2].setOutlineColor(sf::Color::Black);
+
+	for (int i = 0; i < MAX_NUMBER_OF_ITEMS_MAIN; i++)
+	{
+		this->menu[i].setOutlineThickness(1.f);
+		this->menu[i].setScale(1.5f, 1.5f);
+		this->menu[i].setFont(*this->font);
+		this->menu[i].setOrigin(this->menu[i].getLocalBounds().width * 0.5f, this->menu[i].getLocalBounds().height * 0.5f);
+		this->menu[i].setPosition((*this->window).getSize().x * 0.5f, (*this->window).getSize().y * 0.4f + (*this->window).getSize().y * 0.5f / (MAX_NUMBER_OF_ITEMS_MAIN + 1) * (i + 1.f));
+	}
+
+	this->upDownEnterText.setString("(use 'up', 'down', 'Enter' keys)");
+	this->upDownEnterText.setFont(*this->font);
+	this->upDownEnterText.setScale(0.8f, 0.8f);
+	this->upDownEnterText.setOrigin(this->upDownEnterText.getLocalBounds().width * 0.5f, this->upDownEnterText.getLocalBounds().height * 0.5f);
+	this->upDownEnterText.setPosition(this->window->getSize().x * 0.5f, this->window->getSize().y - 140.f);
+	this->upDownEnterText.setFillColor(sf::Color(100, 200, 150));
+
 }

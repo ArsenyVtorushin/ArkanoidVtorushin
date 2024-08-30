@@ -1,17 +1,23 @@
 #include "Level.hpp"
 
-Level::Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* startGameBool, bool* gameOverMenuBool, sf::Text* levelNumberText)
+Level::Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* startGameBool, bool* gameOverMenuBool, sf::Text* levelNumberText, float ballSpeed)
 {
 	this->window = window;
+
 	this->rowBricks = rowBricks;
 	this->columnBricks = columnBricks;
 	this->allBricks = rowBricks * columnBricks;
+
 	this->startGameBool = startGameBool;
-	this->startLevelBool = false;
 	this->gameOverMenuBool = gameOverMenuBool;
-	this->win = false;
+
 	this->levelNumberText = levelNumberText;
 	this->levelNumberText_cooldown = 120;
+
+	this->win = false;
+	this->startLevelBool = false;
+
+	this->ballSpeed = ballSpeed;
 
 	this->init();
 }
@@ -31,6 +37,8 @@ void Level::update()
 	{
 		if (this->levelNumberText_cooldown > 0)
 		{
+			this->levelNumberText->setScale(3.f, 3.f);
+			this->levelNumberText->setPosition(this->window->getSize().x * 0.5, this->window->getSize().y * 0.5 - 20);
 			this->levelNumberText_cooldown--;
 
 			this->setDarkerColor();
@@ -44,6 +52,9 @@ void Level::update()
 			}
 			else
 			{
+				this->levelNumberText->setScale(2.f, 2.f);
+				this->levelNumberText->setPosition(this->window->getSize().x - 550.f, 480.f);
+
 				this->resetDarkerColor();
 
 				this->checkCollision();
@@ -79,10 +90,7 @@ void Level::render()
 				}
 			}
 
-			if (this->levelNumberText_cooldown > 0)
-			{
-				this->window->draw(*this->levelNumberText);
-			}
+			this->window->draw(*this->levelNumberText);
 		}
 	}
 }
@@ -114,7 +122,7 @@ void Level::checkPaddleCollision()
 {
 	if (this->isIntersecting(this->ball->sprite, this->paddle->sprite))
 	{
-		this->ball->setVelocityY(-(rand() % 8 + 8));
+		this->ball->setVelocityY(-(rand() % 10 + 7));
 
 		if (this->ball->x() < this->paddle->x())
 		{
@@ -217,6 +225,7 @@ void Level::initSprites()
 {
 	this->paddle = new Paddle(&this->paddleTexture, this->window);
 	this->ball = new Ball(&this->ballTexture, this->window, this->paddle, &this->levelNumberText_cooldown);
+	this->ball->setSpeed(this->ballSpeed);
 	this->walls = new Walls(&this->wallsTexture);
 	this->logo = new Logo(&this->logoTexture, this->window);
 	this->initHearts();

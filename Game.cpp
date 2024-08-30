@@ -11,6 +11,7 @@ Game::Game()
 
 Game::~Game()
 {
+	this->music.stop();
 	delete this->window;
 	delete this->font;
 	delete this->mainMenu;
@@ -27,6 +28,8 @@ Game::~Game()
 
 void Game::run()
 {
+	this->music.play();
+
 	while (this->window->isOpen())
 	{
 		this->update();
@@ -205,6 +208,7 @@ void Game::init()
 	this->initBooleans();
 	this->initWindow();
 	this->initText();
+	this->initMusic();
 	this->initMenus();
 	this->initInstructions();
 	this->initLevels();
@@ -251,6 +255,16 @@ void Game::initText()
 	this->finalRoundText.setOrigin(this->finalRoundText.getLocalBounds().width * 0.5, this->finalRoundText.getLocalBounds().height * 0.5);
 	this->finalRoundText.setPosition(this->window->getSize().x * 0.5, this->window->getSize().y * 0.5 - 20);
 }
+void Game::initMusic()
+{
+	if (!this->music.openFromFile("C:/Users/Admin/source/repos/ArkanoidVtorushin/Assets/Boiler.ogg"))
+	{
+		std::cout << "Error when opening music\n";
+	}
+
+	this->music.setLoop(true);
+	this->music.setVolume(90);
+}
 void Game::initMenus()
 {
 	this->mainMenu = new MainMenu(this->font, this->window, &this->sfEvent, &this->mainMenuBool, &this->startGameBool, &this->howToPlayBool, &this->exitMainMenuBool);
@@ -264,8 +278,8 @@ void Game::initInstructions()
 }
 void Game::initLevels()
 {
-	this->levelOne = new Level(this->window, 5, 10, &this->startGameBool, &this->gameOverMenuBool, &this->levelOneText);
-	this->levelTwo = new Level(this->window, 10, 5, &this->startGameBool, &this->gameOverMenuBool, &this->levelTwoText);
-	this->finalRound = new Level(this->window, 3, 8, &this->startGameBool, &this->gameOverMenuBool, &this->finalRoundText);
+	this->levelOne = new Level(this->window, 3, 10, &this->startGameBool, &this->gameOverMenuBool, &this->levelOneText, 12.f);
+	this->levelTwo = new Level(this->window, 5, 10, &this->startGameBool, &this->gameOverMenuBool, &this->levelTwoText, 13.f);
+	this->finalRound = new Level(this->window, 10, 2, &this->startGameBool, &this->gameOverMenuBool, &this->finalRoundText, 14.f);
 }
 

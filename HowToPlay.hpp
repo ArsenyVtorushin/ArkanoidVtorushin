@@ -23,6 +23,8 @@ private:
 	sf::Text text;
 	sf::Text back;
 	sf::Text pressSpace;
+
+	void initText();
 };
 
 #endif // !HOWTOPLAY_HPP
