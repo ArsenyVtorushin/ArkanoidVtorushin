@@ -24,19 +24,17 @@ public:
 	void setExitBool(bool exitBool);
 	bool getExitBool();
 
-	int getSelectedItemIndex();
-
 private:
 
 	sf::Font* font;
 	sf::RenderWindow* window;
 	sf::Event* sfEvent;
 
-	sf::Text youWinText;
-	sf::Text menu[MAX_NUMBER_OF_ITEMS_WINMENU];
-
 	bool winMenuBool;
 	bool playAgainBool, exitBool;
+
+	sf::Text youWinText;
+	sf::Text menu[MAX_NUMBER_OF_ITEMS_WINMENU];
 
 	int selectedItemIndex;
 };

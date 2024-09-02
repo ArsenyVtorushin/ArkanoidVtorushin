@@ -17,8 +17,6 @@ public:
 
 	void setStartLevelOneFlag(bool startLevelOneFlag);
 	bool getStartLevelOneFlag();
-	
-	int getSelectedItemIndex();
 
 private:
 

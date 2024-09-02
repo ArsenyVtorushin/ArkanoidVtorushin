@@ -1,14 +1,14 @@
 #include "GameOverMenu.hpp"
 
-GameOverMenu::GameOverMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent, bool* gameOverMenuBool, bool* tryAgainBool, bool* exitGameOverMenuBool)
+GameOverMenu::GameOverMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent)
 {
 	this->font = font;
 	this->window = window;
 	this->sfEvent = sfEvent;
 
-	this->gameOverMenuBool = gameOverMenuBool;
-	this->tryAgainBool = tryAgainBool;
-	this->exitGameOverMenuBool = exitGameOverMenuBool;
+	this->gameOverMenuBool = false;
+	this->tryAgainBool = false;
+	this->exitBool = false;
 
 	this->gameOverText.setString("Game Over");
 	this->gameOverText.setScale(3.f, 3.f);
@@ -35,7 +35,7 @@ GameOverMenu::GameOverMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* 
 
 void GameOverMenu::update()
 {
-	if (*this->gameOverMenuBool)
+	if (this->gameOverMenuBool)
 	{
 		if ((*this->sfEvent).type == sf::Event::KeyReleased)
 		{
@@ -49,18 +49,18 @@ void GameOverMenu::update()
 			}
 			else if ((*this->sfEvent).key.code == sf::Keyboard::Return)
 			{
-				if (this->getSelectedItemIndex() == 0)
+				if (this->selectedItemIndex == 0)
 				{
-					*this->gameOverMenuBool = false;
-					*this->tryAgainBool = true;
-					*this->exitGameOverMenuBool = false;
+					this->gameOverMenuBool = false;
+					this->tryAgainBool = true;
+					this->exitBool = false;
 
 				}
 				else
 				{
-					*this->gameOverMenuBool = false;
-					*this->tryAgainBool = false;
-					*this->exitGameOverMenuBool = true;
+					this->gameOverMenuBool = false;
+					this->tryAgainBool = false;
+					this->exitBool = true;
 				}
 			}
 		}
@@ -68,7 +68,7 @@ void GameOverMenu::update()
 }
 void GameOverMenu::render()
 {
-	if (*this->gameOverMenuBool)
+	if (this->gameOverMenuBool)
 	{
 		(*this->window).draw(this->gameOverText);
 		for (int i = 0; i < MAX_NUMBER_OF_ITEMS_GAMEOVER; i++)
@@ -97,7 +97,31 @@ void GameOverMenu::MoveDown()
 	}
 }
 
-int GameOverMenu::getSelectedItemIndex()
+//Getters/Setters
+
+void GameOverMenu::setGameOverMenuBool(bool gameOverMenuBool)
 {
-	return this->selectedItemIndex;
+	this->gameOverMenuBool = gameOverMenuBool;
+}
+bool GameOverMenu::getGameOverMenuBool()
+{
+	return this->gameOverMenuBool;
+}
+
+void GameOverMenu::setTryAgainBool(bool tryAgainBool)
+{
+	this->tryAgainBool = tryAgainBool;
+}
+bool GameOverMenu::getTryAgainBool()
+{
+	return this->tryAgainBool;
+}
+
+void GameOverMenu::setExitBool(bool exitBool)
+{
+	this->exitBool = exitBool;
+}
+bool GameOverMenu::getExitBool()
+{
+	return this->exitBool;
 }

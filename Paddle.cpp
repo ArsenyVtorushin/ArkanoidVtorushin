@@ -26,6 +26,8 @@ void Paddle::update()
 	}
 }
 
+// Getters / Setters
+
 int Paddle::getHPMax()
 {
 	return this->HPMax;
@@ -47,7 +49,6 @@ float Paddle::y()
 {
 	return this->sprite.getPosition().y;
 }
-
 float Paddle::left()
 {
 	return this->x() - this->sprite.getTexture()->getSize().x * 0.5;

@@ -24,8 +24,6 @@ public:
 	void setExitBool(bool exitBool);
 	bool getExitBool();
 
-	int getSelectedItemIndex();
-
 private:
 
 	sf::Font* font;

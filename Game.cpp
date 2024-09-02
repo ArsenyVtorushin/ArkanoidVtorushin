@@ -1,7 +1,5 @@
 #include "Game.hpp"
 
-//public
-
 // Constructor/Destructor
 
 Game::Game()
@@ -11,7 +9,6 @@ Game::Game()
 
 Game::~Game()
 {
-	this->music.stop();
 	delete this->window;
 	delete this->font;
 	delete this->mainMenu;
@@ -24,7 +21,7 @@ Game::~Game()
 	delete this->finalRound;
 }
 
-// Functions
+// Main functions
 
 void Game::run()
 {
@@ -35,6 +32,8 @@ void Game::run()
 		this->update();
 		this->render();
 	}
+
+	this->music.stop();
 }
 
 void Game::update()
@@ -46,13 +45,10 @@ void Game::update()
 			(*this->window).close();
 		}
 
-		this->updateMainMenu();
-		this->updatePauseMenu();
-		this->updateGameOverMenu();
-		this->updateWinMenu();
+		this->updateMenus();
 	}
 
-	this->Leveling();
+	this->updateLevels();
 }
 void Game::render()
 {
@@ -70,20 +66,30 @@ void Game::render()
 	this->window->display();
 }
 
+// Update menus
+
+void Game::updateMenus()
+{
+	this->updateMainMenu();
+	this->updatePauseMenu();
+	this->updateGameOverMenu();
+	this->updateWinMenu();
+}
+
 void Game::updateMainMenu()
 {
 	this->mainMenu->update();
 
 	if (this->mainMenu->getStartLevelOneFlag())
 	{
-		(*this->levelOne).setStartLevelBool(true);
-		(*this->mainMenu).setStartLevelOneFlag(false);
+		this->levelOne->setStartLevelBool(true);
+		this->mainMenu->setStartLevelOneFlag(false);
 	}
 
 	this->howToPlay->update();
 	if (this->exitMainMenuBool)
 	{
-		(*this->window).close();
+		this->window->close();
 	}
 }
 void Game::updatePauseMenu()
@@ -122,7 +128,7 @@ void Game::updateGameOverMenu()
 {
 	this->gameOverMenu->update();
 
-	if (this->tryAgainBool)
+	if (this->gameOverMenu->getTryAgainBool())
 	{
 		delete this->levelOne;
 		delete this->levelTwo;
@@ -133,10 +139,10 @@ void Game::updateGameOverMenu()
 		this->startGameBool = true;
 		this->levelOne->setStartLevelBool(true);
 
-		this->tryAgainBool = false;
+		this->gameOverMenu->setTryAgainBool(false);
 	}
 
-	if (this->exitGameOverMenuBool)
+	if (this->gameOverMenu->getExitBool())
 	{
 		delete this->levelOne;
 		delete this->levelTwo;
@@ -144,7 +150,7 @@ void Game::updateGameOverMenu()
 
 		this->initLevels();
 
-		this->exitGameOverMenuBool = false;
+		this->gameOverMenu->setExitBool(false);
 		this->mainMenuBool = true;
 	}
 }
@@ -170,38 +176,69 @@ void Game::updateWinMenu()
 	}
 }
 
-void Game::Leveling()
+// Update levels
+
+void Game::updateLevels()
 {
 	if (this->startGameBool)
 	{
-		this->levelOne->update();
-
-		if (this->levelOne->getWin())
-		{
-			this->levelOne->setWin(false);
-			this->levelTwo->setStartLevelBool(true);
-		}
-
-		this->levelTwo->update();
-
-		if (this->levelTwo->getWin())
-		{
-			this->levelTwo->setWin(false);
-			this->finalRound->setStartLevelBool(true);
-		}
-
-		this->finalRound->update();
-
-		if (this->finalRound->getWin())
-		{
-			this->startGameBool = false;
-			this->winMenu->setWinMenuBool(true);
-			this->finalRound->setWin(false);
-		}
+		this->updateLevelOne();
+		this->updateLevelTwo();
+		this->updateFinalRound();
 	}
 }
 
-//private
+void Game::updateLevelOne()
+{
+	this->levelOne->update();
+
+	if (this->levelOne->getGameOverBool())
+	{
+		this->gameOverMenu->setGameOverMenuBool(true);
+		this->levelOne->setGameOverBool(false);
+	}
+
+	if (this->levelOne->getWin())
+	{
+		this->levelOne->setWin(false);
+		this->levelTwo->setStartLevelBool(true);
+	}
+}
+void Game::updateLevelTwo()
+{
+	this->levelTwo->update();
+
+	if (this->levelTwo->getGameOverBool())
+	{
+		this->gameOverMenu->setGameOverMenuBool(true);
+		this->levelTwo->setGameOverBool(false);
+	}
+
+	if (this->levelTwo->getWin())
+	{
+		this->levelTwo->setWin(false);
+		this->finalRound->setStartLevelBool(true);
+	}
+}
+void Game::updateFinalRound()
+{
+	this->finalRound->update();
+
+	if (this->finalRound->getGameOverBool())
+	{
+		this->gameOverMenu->setGameOverMenuBool(true);
+		this->finalRound->setGameOverBool(false);
+	}
+
+	if (this->finalRound->getWin())
+	{
+		this->startGameBool = false;
+		this->winMenu->setWinMenuBool(true);
+		this->finalRound->setWin(false);
+	}
+}
+
+// Initialization
 
 void Game::init()
 {
@@ -221,10 +258,6 @@ void Game::initBooleans()
 	this->startGameBool = false;
 	this->howToPlayBool = false;
 	this->exitMainMenuBool = false;
-
-	this->gameOverMenuBool = false;
-	this->tryAgainBool = false;
-	this->exitGameOverMenuBool = false;
 }
 void Game::initWindow()
 {
@@ -257,19 +290,18 @@ void Game::initText()
 }
 void Game::initMusic()
 {
-	if (!this->music.openFromFile("C:/Users/Admin/source/repos/ArkanoidVtorushin/Assets/Boiler.ogg"))
+	if (!this->music.openFromFile("C:\\Users\\Admin\\source\\repos\\ArkanoidVtorushin\\Assets\\Boiler.ogg"))
 	{
-		std::cout << "Error when opening music\n";
+		std::cerr << "Error when opening music";
 	}
 
 	this->music.setLoop(true);
-	this->music.setVolume(90);
 }
 void Game::initMenus()
 {
 	this->mainMenu = new MainMenu(this->font, this->window, &this->sfEvent, &this->mainMenuBool, &this->startGameBool, &this->howToPlayBool, &this->exitMainMenuBool);
 	this->pauseMenu = new PauseMenu(this->font, this->window, &this->sfEvent);
-	this->gameOverMenu = new GameOverMenu(this->font, this->window, &this->sfEvent, &this->gameOverMenuBool, &this->tryAgainBool, &this->exitGameOverMenuBool);
+	this->gameOverMenu = new GameOverMenu(this->font, this->window, &this->sfEvent);
 	this->winMenu = new WinMenu(this->font, this->window, &this->sfEvent);
 }
 void Game::initInstructions()
@@ -278,8 +310,8 @@ void Game::initInstructions()
 }
 void Game::initLevels()
 {
-	this->levelOne = new Level(this->window, 3, 10, &this->startGameBool, &this->gameOverMenuBool, &this->levelOneText, 12.f);
-	this->levelTwo = new Level(this->window, 5, 10, &this->startGameBool, &this->gameOverMenuBool, &this->levelTwoText, 13.f);
-	this->finalRound = new Level(this->window, 10, 2, &this->startGameBool, &this->gameOverMenuBool, &this->finalRoundText, 14.f);
+	this->levelOne = new Level(this->window, 3, 10, &this->startGameBool, &this->levelOneText, 12.f);
+	this->levelTwo = new Level(this->window, 5, 10, &this->startGameBool, &this->levelTwoText, 13.f);
+	this->finalRound = new Level(this->window, 10, 2, &this->startGameBool, &this->finalRoundText, 14.f);
 }
 

@@ -19,7 +19,7 @@ MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent,
 	this->selectedItemIndex = 0;
 }
 
-//Functions
+// Main functions
 
 void MainMenu::update()
 {
@@ -37,7 +37,7 @@ void MainMenu::update()
 			}
 			else if ((*this->sfEvent).key.code == sf::Keyboard::Return)
 			{
-				if (this->getSelectedItemIndex() == 0)
+				if (this->selectedItemIndex == 0)
 				{
 					*this->mainMenuBool = false;
 					*this->startGameBool = true;
@@ -45,7 +45,7 @@ void MainMenu::update()
 					*this->howToPlayBool = false;
 					*this->exitMainMenuBool = false;
 				}
-				else if (this->getSelectedItemIndex() == 1)
+				else if (this->selectedItemIndex == 1)
 				{
 					*this->mainMenuBool = false;
 					*this->startGameBool = false;
@@ -97,6 +97,8 @@ void MainMenu::MoveDown()
 	}
 }
 
+//Getters/Setters
+
 void MainMenu::setStartLevelOneFlag(bool startLevelOneFlag)
 {
 	this->startLevelOneFlag = startLevelOneFlag;
@@ -104,11 +106,6 @@ void MainMenu::setStartLevelOneFlag(bool startLevelOneFlag)
 bool MainMenu::getStartLevelOneFlag()
 {
 	return this->startLevelOneFlag;
-}
-
-int MainMenu::getSelectedItemIndex()
-{
-	return this->selectedItemIndex;
 }
 
 //Initialization

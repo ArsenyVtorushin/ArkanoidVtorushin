@@ -51,7 +51,7 @@ void PauseMenu::update()
 			}
 			else if ((*this->sfEvent).key.code == sf::Keyboard::Return)
 			{
-				if (this->getSelectedItemIndex() == 0)
+				if (this->selectedItemIndex == 0)
 				{
 					this->pauseMenuBool = false;
 					this->continueBool = true;
@@ -126,9 +126,4 @@ void PauseMenu::setExitBool(bool exitBool)
 bool PauseMenu::getExitBool()
 {
 	return this->exitBool;
-}
-
-int PauseMenu::getSelectedItemIndex()
-{
-	return this->selectedItemIndex;
 }

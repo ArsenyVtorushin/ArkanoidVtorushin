@@ -51,7 +51,7 @@ void WinMenu::update()
 			}
 			else if ((*this->sfEvent).key.code == sf::Keyboard::Return)
 			{
-				if (this->getSelectedItemIndex() == 0)
+				if (this->selectedItemIndex == 0)
 				{
 					this->winMenuBool = false;
 					this->playAgainBool = true;
@@ -126,9 +126,4 @@ void WinMenu::setExitBool(bool exitBool)
 bool WinMenu::getExitBool()
 {
 	return this->exitBool;
-}
-
-int WinMenu::getSelectedItemIndex()
-{
-	return this->selectedItemIndex;
 }

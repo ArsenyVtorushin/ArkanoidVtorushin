@@ -1,6 +1,6 @@
 #include "Level.hpp"
 
-Level::Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* startGameBool, bool* gameOverMenuBool, sf::Text* levelNumberText, float ballSpeed)
+Level::Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* startGameBool, sf::Text* levelNumberText, float ballSpeed)
 {
 	this->window = window;
 
@@ -9,15 +9,15 @@ Level::Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* st
 	this->allBricks = rowBricks * columnBricks;
 
 	this->startGameBool = startGameBool;
-	this->gameOverMenuBool = gameOverMenuBool;
 
 	this->levelNumberText = levelNumberText;
 	this->levelNumberText_cooldown = 120;
 
+	this->ballSpeed = ballSpeed;
+
 	this->win = false;
 	this->startLevelBool = false;
-
-	this->ballSpeed = ballSpeed;
+	this->gameOverBool = false;
 
 	this->init();
 }
@@ -30,6 +30,8 @@ Level::~Level()
 	delete this->hearts;
 	delete this->bricks;
 }
+
+// Main functions
 
 void Level::update()
 {
@@ -94,6 +96,8 @@ void Level::render()
 		}
 	}
 }
+
+// Check stuff
 
 void Level::checkCollision()
 {
@@ -177,7 +181,6 @@ void Level::checkBrickCollision()
 		}
 	}
 }
-
 void Level::checkBallOut()
 {
 	if (this->ball->top() > this->window->getSize().y + 100)
@@ -188,7 +191,7 @@ void Level::checkBallOut()
 		{
 			*this->startGameBool = false;
 			this->startLevelBool = false;
-			*this->gameOverMenuBool = true;
+			this->gameOverBool = true;
 
 			delete this->hearts;
 			this->initHearts();
@@ -207,52 +210,7 @@ bool Level::isIntersecting(sf::Sprite first, sf::Sprite second)
 	return first.getGlobalBounds().intersects(second.getGlobalBounds());
 }
 
-void Level::init()
-{
-	this->initTextures();
-	this->initSprites();
-}
-void Level::initTextures()
-{
-	this->paddleTexture.loadFromFile("Assets/Paddle3.png");
-	this->ballTexture.loadFromFile("Assets/Ball2.png");
-	this->wallsTexture.loadFromFile("Assets/Walls.png");
-	this->logoTexture.loadFromFile("Assets/ArkanoidLogo.png");
-	this->heartTexture.loadFromFile("Assets/Heart.png");
-	this->brickTexture.loadFromFile("Assets/Brick.png");
-}
-void Level::initSprites()
-{
-	this->paddle = new Paddle(&this->paddleTexture, this->window);
-	this->ball = new Ball(&this->ballTexture, this->window, this->paddle, &this->levelNumberText_cooldown);
-	this->ball->setSpeed(this->ballSpeed);
-	this->walls = new Walls(&this->wallsTexture);
-	this->logo = new Logo(&this->logoTexture, this->window);
-	this->initHearts();
-	this->initBricks();
-}
-
-void Level::initHearts()
-{
-	this->hearts = new std::vector<Heart>(this->paddle->getHPMax(), &this->heartTexture);
-
-	for (int i = 0; i < this->hearts->size(); i++)
-	{
-		(*this->hearts)[i].sprite.setPosition(X_HEARTS_POS, Y_HEARTS_POS);
-	}
-}
-void Level::initBricks()
-{
-	this->bricks = new std::vector<std::vector<Brick>>(this->rowBricks, std::vector<Brick>(this->columnBricks, { &this->brickTexture }));
-
-	for (int i = 0; i < (*this->bricks).size(); i++)
-	{
-		for (int j = 0; j < (*this->bricks)[i].size(); j++)
-		{
-			(*this->bricks)[i][j].sprite.setPosition(X_BRICKS_POS, Y_BRICKS_POS);
-		}
-	}
-}
+// Getters / Setters
 
 void Level::setDarkerColor()
 {
@@ -304,6 +262,15 @@ bool Level::getStartLevelBool()
 	return this->startLevelBool;
 }
 
+void Level::setGameOverBool(bool gameOverBool)
+{
+	this->gameOverBool = gameOverBool;
+}
+bool Level::getGameOverBool()
+{
+	return this->gameOverBool;
+}
+
 void Level::setWin(bool win)
 {
 	this->win = win;
@@ -311,4 +278,53 @@ void Level::setWin(bool win)
 bool Level::getWin()
 {
 	return this->win;
+}
+
+//Initialization
+
+void Level::init()
+{
+	this->initTextures();
+	this->initSprites();
+}
+void Level::initTextures()
+{
+	this->paddleTexture.loadFromFile("Assets/Paddle3.png");
+	this->ballTexture.loadFromFile("Assets/Ball2.png");
+	this->wallsTexture.loadFromFile("Assets/Walls.png");
+	this->logoTexture.loadFromFile("Assets/ArkanoidLogo.png");
+	this->heartTexture.loadFromFile("Assets/Heart.png");
+	this->brickTexture.loadFromFile("Assets/Brick.png");
+}
+void Level::initSprites()
+{
+	this->paddle = new Paddle(&this->paddleTexture, this->window);
+	this->ball = new Ball(&this->ballTexture, this->window, this->paddle, &this->levelNumberText_cooldown);
+	this->ball->setSpeed(this->ballSpeed);
+	this->walls = new Walls(&this->wallsTexture);
+	this->logo = new Logo(&this->logoTexture, this->window);
+	this->initHearts();
+	this->initBricks();
+}
+
+void Level::initHearts()
+{
+	this->hearts = new std::vector<Heart>(this->paddle->getHPMax(), &this->heartTexture);
+
+	for (int i = 0; i < this->hearts->size(); i++)
+	{
+		(*this->hearts)[i].sprite.setPosition(X_HEARTS_POS, Y_HEARTS_POS);
+	}
+}
+void Level::initBricks()
+{
+	this->bricks = new std::vector<std::vector<Brick>>(this->rowBricks, std::vector<Brick>(this->columnBricks, { &this->brickTexture }));
+
+	for (int i = 0; i < (*this->bricks).size(); i++)
+	{
+		for (int j = 0; j < (*this->bricks)[i].size(); j++)
+		{
+			(*this->bricks)[i][j].sprite.setPosition(X_BRICKS_POS, Y_BRICKS_POS);
+		}
+	}
 }

@@ -12,21 +12,21 @@ class Level
 {
 public:
 
-	Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* startGameBool, bool* gameOverMenuBool, sf::Text* levelNumberText, float ballSpeed);
+	Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* startGameBool, sf::Text* levelNumberText, float ballSpeed);
 	~Level();
 
 	void update();
 	void render();
 
 	void checkCollision();
-
 	void checkWallsCollision();
 	void checkPaddleCollision();
 	void checkBrickCollision();
-
 	void checkBallOut();
 
 	bool isIntersecting(sf::Sprite first, sf::Sprite second);
+
+	// Getters / Setters
 
 	void setDarkerColor();
 	void resetDarkerColor();
@@ -34,11 +34,16 @@ public:
 	void setStartLevelBool(bool startLevelBool);
 	bool getStartLevelBool();
 
+	void setGameOverBool(bool gameOverBool);
+	bool getGameOverBool();
+
 	void setWin(bool win);
 	bool getWin();
 
 private:
 
+	// Variables
+	
 	int rowBricks, columnBricks;
 	int allBricks;
 
@@ -49,11 +54,10 @@ private:
 
 	bool ballFromLeft, ballFromTop;
 	bool* startGameBool, startLevelBool;
-	bool* gameOverMenuBool;
+	bool gameOverBool;
 	bool win;
 
 	sf::RenderWindow* window;
-	sf::Event* event;
 
 	sf::Texture paddleTexture;
 	sf::Texture ballTexture;

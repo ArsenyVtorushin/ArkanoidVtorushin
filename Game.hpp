@@ -10,15 +10,23 @@ public:
 	~Game();
 
 	void run();
+
 	void update();
 	void render();
+
+	void updateMenus();
 
 	void updateMainMenu();
 	void updatePauseMenu();
 	void updateGameOverMenu();
 	void updateWinMenu();
 
-	void Leveling();
+	void updateLevels();
+
+	void updateLevelOne();
+	void updateLevelTwo();
+	void updateFinalRound();
+
 
 private:
 
@@ -27,6 +35,7 @@ private:
 	sf::RenderWindow* window;
 	sf::Event sfEvent;
 	sf::Font* font;
+
 	sf::Music music;
 
 	sf::Text levelOneText, levelTwoText, finalRoundText;
@@ -45,9 +54,6 @@ private:
 	bool mainMenuBool;
 	bool startGameBool, howToPlayBool, exitMainMenuBool;
 
-	bool gameOverMenuBool;
-	bool tryAgainBool, exitGameOverMenuBool;
-
 	//Initialization
 
 	void init();
@@ -59,7 +65,6 @@ private:
 	void initMenus();
 	void initInstructions();
 	void initLevels();
-
 };
 
 #endif // !GAME_H
