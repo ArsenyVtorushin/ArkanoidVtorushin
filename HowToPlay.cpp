@@ -1,41 +1,58 @@
 #include "HowToPlay.hpp"
 
-HowToPlay::HowToPlay(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent, bool* mainMenuBool, bool* howToPlayBool)
+HowToPlay::HowToPlay(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent)
 {
 	this->font = font;
 	this->window = window;
 	this->sfEvent = sfEvent;
 
-	this->mainMenuBool = mainMenuBool;
-	this->howToPlayBool = howToPlayBool;
+	this->backBool = false;
+	this->howToPlayBool = false;
 
 	this->initText();
 }
 
+// Main functions
+
 void HowToPlay::update()
 {
-	if (*this->howToPlayBool)
+	if (this->howToPlayBool)
 	{
 		if ((*this->sfEvent).type == sf::Event::KeyReleased && (*this->sfEvent).key.code == sf::Keyboard::Space)
 		{
-			*this->howToPlayBool = false;
-			*this->mainMenuBool = true;
+			this->backBool = true;
+			this->howToPlayBool = false;
 		}
 	}
 }
-
-// why isnt it working? maybe its that the KeyReleased/Return thing in MainMenu
-// is the same as the KeyReleased/Return thing in here (update) 
-// upd: YES
-
 void HowToPlay::render()
 {
-	if (*this->howToPlayBool)
+	if (this->howToPlayBool)
 	{
 		(*this->window).draw(this->text);
 		(*this->window).draw(this->back);
 		(*this->window).draw(this->pressSpace);
 	}
+}
+
+// Getters / Setters
+
+void HowToPlay::setBackBool(bool backBool)
+{
+	this->backBool = backBool;
+}
+bool HowToPlay::getBackBool()
+{
+	return this->backBool;
+}
+
+void HowToPlay::setHowToPlayBool(bool howToPlayBool)
+{
+	this->howToPlayBool = howToPlayBool;
+}
+bool HowToPlay::getHowToPlayBool()
+{
+	return this->howToPlayBool;
 }
 
 void HowToPlay::initText()

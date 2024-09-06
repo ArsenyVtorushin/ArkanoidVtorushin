@@ -12,11 +12,15 @@ class Level
 {
 public:
 
-	Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* startGameBool, sf::Text* levelNumberText, float ballSpeed);
+	Level(sf::RenderWindow* window, int rowBricks, int columnBricks, sf::Text* levelNumberText, float ballSpeed);
 	~Level();
+
+	// Main functions
 
 	void update();
 	void render();
+
+	// Check stuff
 
 	void checkCollision();
 	void checkWallsCollision();
@@ -49,11 +53,10 @@ private:
 
 	float overlapLeft, overlapRight, overlapTop, overlapBottom;
 	float minOverlapX, minOverlapY;
-
 	float ballSpeed;
 
 	bool ballFromLeft, ballFromTop;
-	bool* startGameBool, startLevelBool;
+	bool startLevelBool;
 	bool gameOverBool;
 	bool win;
 
@@ -80,9 +83,9 @@ private:
 	//Initialization
 
 	void init();
+
 	void initTextures();
 	void initSprites();
-
 	void initHearts();
 	void initBricks();
 };

@@ -6,7 +6,6 @@ Game::Game()
 {
 	init();
 }
-
 Game::~Game()
 {
 	delete this->window;
@@ -58,10 +57,10 @@ void Game::render()
 	this->pauseMenu->render();
 	this->gameOverMenu->render();
 	this->winMenu->render();
+
 	this->howToPlay->render();
-	this->levelOne->render();
-	this->levelTwo->render();
-	this->finalRound->render();
+
+	this->renderLevels();
 
 	this->window->display();
 }
@@ -80,26 +79,40 @@ void Game::updateMainMenu()
 {
 	this->mainMenu->update();
 
+	if (this->mainMenu->getHowToPlayBool())
+	{
+		this->howToPlay->setHowToPlayBool(true);
+		this->mainMenu->setHowToPlayBool(false);
+	}
+
+	this->howToPlay->update();
+
+	if (this->howToPlay->getBackBool())
+	{
+		this->mainMenu->setMainMenuBool(true);
+		this->howToPlay->setBackBool(false);
+	}
+
+	if (this->mainMenu->getExitBool())
+	{
+		this->window->close();
+	}
+
 	if (this->mainMenu->getStartLevelOneFlag())
 	{
 		this->levelOne->setStartLevelBool(true);
 		this->mainMenu->setStartLevelOneFlag(false);
 	}
-
-	this->howToPlay->update();
-	if (this->exitMainMenuBool)
-	{
-		this->window->close();
-	}
 }
 void Game::updatePauseMenu()
 {
-	if (this->startGameBool)
+	if (this->mainMenu->getStartGameBool())
 	{
 		if (this->sfEvent.type == sf::Event::KeyReleased && this->sfEvent.key.code == sf::Keyboard::Space)
 		{
-			this->startGameBool = false;
 			this->pauseMenu->setPauseMenuBool(true);
+			this->music.pause();
+			this->mainMenu->setStartGameBool(false);
 		}
 	}
 
@@ -107,7 +120,8 @@ void Game::updatePauseMenu()
 
 	if (this->pauseMenu->getContinueBool())
 	{
-		this->startGameBool = true;
+		this->mainMenu->setStartGameBool(true);
+		this->music.play();
 		this->pauseMenu->setContinueBool(false);
 	}
 
@@ -119,7 +133,8 @@ void Game::updatePauseMenu()
 
 		this->initLevels();
 
-		this->mainMenuBool = true;
+		this->mainMenu->setMainMenuBool(true);
+		this->music.play();
 		this->pauseMenu->setExitBool(false);
 	}
 	
@@ -136,9 +151,8 @@ void Game::updateGameOverMenu()
 
 		this->initLevels();
 
-		this->startGameBool = true;
+		this->mainMenu->setStartGameBool(true);
 		this->levelOne->setStartLevelBool(true);
-
 		this->gameOverMenu->setTryAgainBool(false);
 	}
 
@@ -150,8 +164,8 @@ void Game::updateGameOverMenu()
 
 		this->initLevels();
 
+		this->mainMenu->setMainMenuBool(true);
 		this->gameOverMenu->setExitBool(false);
-		this->mainMenuBool = true;
 	}
 }
 void Game::updateWinMenu()
@@ -166,7 +180,7 @@ void Game::updateWinMenu()
 
 		this->initLevels();
 
-		this->mainMenuBool = true;
+		this->mainMenu->setMainMenuBool(true);
 		this->winMenu->setPlayAgainBool(false);
 	}
 	
@@ -180,7 +194,7 @@ void Game::updateWinMenu()
 
 void Game::updateLevels()
 {
-	if (this->startGameBool)
+	if (this->mainMenu->getStartGameBool())
 	{
 		this->updateLevelOne();
 		this->updateLevelTwo();
@@ -195,6 +209,7 @@ void Game::updateLevelOne()
 	if (this->levelOne->getGameOverBool())
 	{
 		this->gameOverMenu->setGameOverMenuBool(true);
+		this->mainMenu->setStartGameBool(false);
 		this->levelOne->setGameOverBool(false);
 	}
 
@@ -211,6 +226,7 @@ void Game::updateLevelTwo()
 	if (this->levelTwo->getGameOverBool())
 	{
 		this->gameOverMenu->setGameOverMenuBool(true);
+		this->mainMenu->setStartGameBool(false);
 		this->levelTwo->setGameOverBool(false);
 	}
 
@@ -227,14 +243,27 @@ void Game::updateFinalRound()
 	if (this->finalRound->getGameOverBool())
 	{
 		this->gameOverMenu->setGameOverMenuBool(true);
+		this->mainMenu->setStartGameBool(false);
 		this->finalRound->setGameOverBool(false);
 	}
 
 	if (this->finalRound->getWin())
 	{
-		this->startGameBool = false;
+		this->mainMenu->setStartGameBool(false);
 		this->winMenu->setWinMenuBool(true);
 		this->finalRound->setWin(false);
+	}
+}
+
+// Render levels
+
+void Game::renderLevels()
+{
+	if (this->mainMenu->getStartGameBool())
+	{
+		this->levelOne->render();
+		this->levelTwo->render();
+		this->finalRound->render();
 	}
 }
 
@@ -242,7 +271,6 @@ void Game::updateFinalRound()
 
 void Game::init()
 {
-	this->initBooleans();
 	this->initWindow();
 	this->initText();
 	this->initMusic();
@@ -251,14 +279,6 @@ void Game::init()
 	this->initLevels();
 }
 
-void Game::initBooleans()
-{
-	this->mainMenuBool = true;
-
-	this->startGameBool = false;
-	this->howToPlayBool = false;
-	this->exitMainMenuBool = false;
-}
 void Game::initWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Arkanoid", sf::Style::Fullscreen);
@@ -299,19 +319,20 @@ void Game::initMusic()
 }
 void Game::initMenus()
 {
-	this->mainMenu = new MainMenu(this->font, this->window, &this->sfEvent, &this->mainMenuBool, &this->startGameBool, &this->howToPlayBool, &this->exitMainMenuBool);
+	this->mainMenu = new MainMenu(this->font, this->window, &this->sfEvent);
+	this->mainMenu->setMainMenuBool(true);
 	this->pauseMenu = new PauseMenu(this->font, this->window, &this->sfEvent);
 	this->gameOverMenu = new GameOverMenu(this->font, this->window, &this->sfEvent);
 	this->winMenu = new WinMenu(this->font, this->window, &this->sfEvent);
 }
 void Game::initInstructions()
 {
-	this->howToPlay = new HowToPlay(this->font, this->window, &this->sfEvent, &this->mainMenuBool, &this->howToPlayBool);
+	this->howToPlay = new HowToPlay(this->font, this->window, &this->sfEvent);
 }
 void Game::initLevels()
 {
-	this->levelOne = new Level(this->window, 3, 10, &this->startGameBool, &this->levelOneText, 12.f);
-	this->levelTwo = new Level(this->window, 5, 10, &this->startGameBool, &this->levelTwoText, 13.f);
-	this->finalRound = new Level(this->window, 10, 2, &this->startGameBool, &this->finalRoundText, 14.f);
+	this->levelOne = new Level(this->window, 3, 10, &this->levelOneText, 12.f);
+	this->levelTwo = new Level(this->window, 5, 10, &this->levelTwoText, 13.f);
+	this->finalRound = new Level(this->window, 10, 2, &this->finalRoundText, 14.f);
 }
 

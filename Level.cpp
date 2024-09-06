@@ -1,6 +1,6 @@
 #include "Level.hpp"
 
-Level::Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* startGameBool, sf::Text* levelNumberText, float ballSpeed)
+Level::Level(sf::RenderWindow* window, int rowBricks, int columnBricks, sf::Text* levelNumberText, float ballSpeed)
 {
 	this->window = window;
 
@@ -8,16 +8,14 @@ Level::Level(sf::RenderWindow* window, int rowBricks, int columnBricks, bool* st
 	this->columnBricks = columnBricks;
 	this->allBricks = rowBricks * columnBricks;
 
-	this->startGameBool = startGameBool;
-
 	this->levelNumberText = levelNumberText;
 	this->levelNumberText_cooldown = 120;
 
 	this->ballSpeed = ballSpeed;
 
-	this->win = false;
 	this->startLevelBool = false;
 	this->gameOverBool = false;
+	this->win = false;
 
 	this->init();
 }
@@ -70,30 +68,27 @@ void Level::update()
 }
 void Level::render()
 {
-	if (*this->startGameBool)
+	if (this->startLevelBool)
 	{
-		if (this->startLevelBool)
+		this->window->draw(this->paddle->sprite);
+		this->window->draw(this->ball->sprite);
+		this->window->draw(this->walls->sprite);
+		this->window->draw(this->logo->sprite);
+
+		for (int i = 0; i < this->hearts->size(); i++)
 		{
-			this->window->draw(this->paddle->sprite);
-			this->window->draw(this->ball->sprite);
-			this->window->draw(this->walls->sprite);
-			this->window->draw(this->logo->sprite);
-
-			for (int i = 0; i < this->hearts->size(); i++)
-			{
-				this->window->draw((*this->hearts)[i].sprite);
-			}
-
-			for (int i = 0; i < (*this->bricks).size(); i++)
-			{
-				for (int j = 0; j < (*this->bricks)[i].size(); j++)
-				{
-					this->window->draw((*this->bricks)[i][j].sprite);
-				}
-			}
-
-			this->window->draw(*this->levelNumberText);
+			this->window->draw((*this->hearts)[i].sprite);
 		}
+
+		for (int i = 0; i < (*this->bricks).size(); i++)
+		{
+			for (int j = 0; j < (*this->bricks)[i].size(); j++)
+			{
+				this->window->draw((*this->bricks)[i][j].sprite);
+			}
+		}
+
+		this->window->draw(*this->levelNumberText);
 	}
 }
 
@@ -105,6 +100,7 @@ void Level::checkCollision()
 	this->checkPaddleCollision();
 	this->checkBrickCollision();
 }
+
 void Level::checkWallsCollision()
 {
 	if (this->ball->left() <= 312)
@@ -189,7 +185,6 @@ void Level::checkBallOut()
 
 		if (this->hearts->empty())
 		{
-			*this->startGameBool = false;
 			this->startLevelBool = false;
 			this->gameOverBool = true;
 
@@ -287,6 +282,7 @@ void Level::init()
 	this->initTextures();
 	this->initSprites();
 }
+
 void Level::initTextures()
 {
 	this->paddleTexture.loadFromFile("Assets/Paddle3.png");
@@ -306,7 +302,6 @@ void Level::initSprites()
 	this->initHearts();
 	this->initBricks();
 }
-
 void Level::initHearts()
 {
 	this->hearts = new std::vector<Heart>(this->paddle->getHPMax(), &this->heartTexture);

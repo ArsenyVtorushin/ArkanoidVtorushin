@@ -27,6 +27,7 @@ public:
 	void updateLevelTwo();
 	void updateFinalRound();
 
+	void renderLevels();
 
 private:
 
@@ -51,14 +52,10 @@ private:
 	Level* levelTwo;
 	Level* finalRound;
 
-	bool mainMenuBool;
-	bool startGameBool, howToPlayBool, exitMainMenuBool;
-
 	//Initialization
 
 	void init();
 
-	void initBooleans();
 	void initWindow();
 	void initText();
 	void initMusic();

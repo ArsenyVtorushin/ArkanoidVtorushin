@@ -6,10 +6,20 @@ class HowToPlay
 {
 public:
 
-	HowToPlay(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent, bool*mainMenuBool, bool* howToPlayBool);
+	HowToPlay(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent);
+
+	// Main functions
 
 	void update();
 	void render();
+
+	// Getters / Setters
+
+	void setBackBool(bool backBool);
+	bool getBackBool();
+
+	void setHowToPlayBool(bool howToPlayBool);
+	bool getHowToPlayBool();
 
 private:
 
@@ -17,8 +27,8 @@ private:
 	sf::RenderWindow* window;
 	sf::Event* sfEvent;
 
-	bool* mainMenuBool;
-	bool* howToPlayBool;
+	bool backBool;
+	bool howToPlayBool;
 
 	sf::Text text;
 	sf::Text back;

@@ -1,6 +1,6 @@
 #include "MainMenu.hpp"
 
-MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent, bool* mainMenuBool, bool* startGameBool, bool* howToPlayBool, bool* exitMainMenuBool)
+MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent)
 {	
 	this->font = font;
 	this->window = window;
@@ -9,7 +9,7 @@ MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent,
 	this->mainMenuBool = mainMenuBool;
 	this->startGameBool = startGameBool;
 	this->howToPlayBool = howToPlayBool;
-	this->exitMainMenuBool = exitMainMenuBool;
+	this->exitBool = exitBool;
 
 	this->startLevelOneFlag = false;
 
@@ -23,7 +23,7 @@ MainMenu::MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent,
 
 void MainMenu::update()
 {
-	if (*this->mainMenuBool)
+	if (this->mainMenuBool)
 	{
 		if ((*this->sfEvent).type == sf::Event::KeyReleased)
 		{
@@ -39,25 +39,26 @@ void MainMenu::update()
 			{
 				if (this->selectedItemIndex == 0)
 				{
-					*this->mainMenuBool = false;
-					*this->startGameBool = true;
+					this->mainMenuBool = false;
+					this->startGameBool = true;
+					this->howToPlayBool = false;
+					this->exitBool = false;
+
 					this->startLevelOneFlag = true;
-					*this->howToPlayBool = false;
-					*this->exitMainMenuBool = false;
 				}
 				else if (this->selectedItemIndex == 1)
 				{
-					*this->mainMenuBool = false;
-					*this->startGameBool = false;
-					*this->howToPlayBool = true;
-					*this->exitMainMenuBool = false;
+					this->mainMenuBool = false;
+					this->startGameBool = false;
+					this->howToPlayBool = true;
+					this->exitBool = false;
 				}
 				else
 				{
-					*this->mainMenuBool = false;
-					*this->startGameBool = false;
-					*this->howToPlayBool = false;
-					*this->exitMainMenuBool = true;
+					this->mainMenuBool = false;
+					this->startGameBool = false;
+					this->howToPlayBool = false;
+					this->exitBool = true;
 				}
 			}
 		}
@@ -65,7 +66,7 @@ void MainMenu::update()
 }
 void MainMenu::render()
 {
-	if (*this->mainMenuBool)
+	if (this->mainMenuBool)
 	{
 		this->window->draw(this->logo);
 
@@ -97,7 +98,43 @@ void MainMenu::MoveDown()
 	}
 }
 
-//Getters/Setters
+// Getters / Setters
+
+void MainMenu::setMainMenuBool(bool mainMenuBool)
+{
+	this->mainMenuBool = mainMenuBool;
+}
+bool MainMenu::getMainMenuBool()
+{
+	return this->mainMenuBool;
+}
+
+void MainMenu::setStartGameBool(bool startGameBool)
+{
+	this->startGameBool = startGameBool;
+}
+bool MainMenu::getStartGameBool()
+{
+	return this->startGameBool;
+}
+
+void MainMenu::setHowToPlayBool(bool howToPlayBool)
+{
+	this->howToPlayBool = howToPlayBool;
+}
+bool MainMenu::getHowToPlayBool()
+{
+	return this->howToPlayBool;
+}
+
+void MainMenu::setExitBool(bool exitBool)
+{
+	this->exitBool = exitBool;
+}
+bool MainMenu::getExitBool()
+{
+	return this->exitBool;
+}
 
 void MainMenu::setStartLevelOneFlag(bool startLevelOneFlag)
 {

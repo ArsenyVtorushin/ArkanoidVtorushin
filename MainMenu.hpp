@@ -7,7 +7,9 @@ class MainMenu
 {
 public:
 
-	MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent, bool* mainMenuBool, bool* startGameBool, bool* howToPlayBool, bool* exitMainMenuBool);
+	MainMenu(sf::Font* font, sf::RenderWindow* window, sf::Event* sfEvent);
+
+	// Main functions
 
 	void update();
 	void render();
@@ -15,25 +17,44 @@ public:
 	void MoveUp();
 	void MoveDown();
 
+	// Getters / Setters
+
+	void setMainMenuBool(bool mainMenuBool);
+	bool getMainMenuBool();
+
+	void setStartGameBool(bool startGameBool);
+	bool getStartGameBool();
+
+	void setHowToPlayBool(bool howToPlayBool);
+	bool getHowToPlayBool();
+
+	void setExitBool(bool exitBool);
+	bool getExitBool();
+
 	void setStartLevelOneFlag(bool startLevelOneFlag);
 	bool getStartLevelOneFlag();
 
 private:
 
-	int selectedItemIndex;
+	// Variables
 	
 	sf::Font* font;
-	sf::Text menu[MAX_NUMBER_OF_ITEMS_MAIN];
-	sf::Text upDownEnterText;
 	sf::RenderWindow* window;
 	sf::Event* sfEvent;
+
+	bool mainMenuBool;
+	bool startGameBool, howToPlayBool, exitBool;
+	bool startLevelOneFlag;
 
 	sf::Texture logoTexture;
 	sf::Sprite logo;
 
-	bool* mainMenuBool;
-	bool* startGameBool, * howToPlayBool, * exitMainMenuBool;
-	bool startLevelOneFlag;
+	sf::Text menu[MAX_NUMBER_OF_ITEMS_MAIN];
+	sf::Text upDownEnterText;
+
+	int selectedItemIndex;
+
+	//Initialization
 
 	void initLogo();
 	void initText();
